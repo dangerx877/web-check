@@ -75,3 +75,10 @@ Node colors: cyan = selected, green = healthy, amber = degraded, red = down, gre
 **Upgrading from the original script?** Existing accounts and `vault.enc` are upgraded automatically on first successful sign-in. Your old `vault.enc` is copied into the new per-user `vaults/` folder and left in place.
 
 **The Enterprise SSO button is gone?** It only opened a browser and never completed a sign-in, so it was removed rather than imply protection it didn't provide.
+
+## Homelab (4.0)
+
+The **Homelab** tab summarises the homelab platform (health, devices, VMs, containers, alerts, backups) and has
+*Discover…*, *Collect & Check* and *Open Web Dashboard*. The web dashboard is the full interface for servers,
+virtualization, containers, storage, IPAM/VLANs, monitoring, automation, backups and security. See
+[homelab/MODULES.md](homelab/MODULES.md) and [homelab/DEPLOYMENT.md](homelab/DEPLOYMENT.md).

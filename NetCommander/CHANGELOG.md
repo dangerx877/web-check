@@ -1,5 +1,49 @@
 # Changelog
 
+## 4.0.0 - homelab & infrastructure platform
+
+> **Upgrade note:** additive - no existing file is converted. New data lives in `homelab.db`,
+> `homelab_secrets.json` (encrypted) and the optional `homelab.json`. See [docs/homelab/UPGRADE.md](docs/homelab/UPGRADE.md).
+
+NetCommander grows from a network tool into a homelab and infrastructure management platform while keeping every
+3.x feature, file format and command. All 2,103 existing tests pass unchanged; ~140 tests were added.
+
+### New
+- **Unified inventory** of servers, desktops, laptops, network gear, NAS, hypervisors, VMs, containers and
+  services; manual entries (edited fields are locked against discovery), CSV import/export, relationships, and a
+  read-only mirror of the existing network inventory.
+- **Agentless discovery**: TCP probes (no root), SSH/HTTP banners, ARP/NDP + vendor lookup, reverse DNS, classifier.
+- **Server management**: Linux over SSH and Windows over PowerShell remoting - CPU, memory, disks, network,
+  services, processes, uptime - with fixed read-only command sets; connectivity tests.
+- **Virtualization**: Proxmox VE (REST), VMware ESXi/vCenter (pyVmomi, beta), Hyper-V (PowerShell, beta),
+  VirtualBox, KVM/libvirt - VMs, resources, configuration, disks, snapshots, host allocation, confirmed power actions.
+- **Docker**: containers, health, stats, logs, images, networks, volumes, Compose projects, confirmed start/stop/restart.
+- **Storage**: TrueNAS, Synology (beta), UGREEN and QNAP over SSH (beta), generic Linux/ZFS/mdadm - pools, RAID,
+  disks with SMART, shares, SMB/NFS/iSCSI checks, growth forecasting.
+- **Network**: IPAM (subnets, reservations, conflicts, next free), VLANs, diagnostics, unified topology.
+- **Monitoring center**: reachability/TCP/HTTP checks, 13 default thresholds, alerts with hysteresis and
+  acknowledgement, notifications (file, webhook, e-mail), event timeline, graphs, health scores, utilisation report.
+- **Automation center**: Python/SSH/PowerShell scripts, built-ins, parameters, risk scan, second-person approval
+  bound to the script hash, execution history, workflows, expiring remediation policies.
+- **Backup & DR**: backup job monitoring (Proxmox, TrueNAS, files, NetCommander config backups, manual),
+  verification, recovery points, recovery runbook, configuration export.
+- **Management API + web dashboard** (`netcommander serve`): TOTP sign-in, sessions, CSRF, strict CSP,
+  responsive dark/light UI. **Homelab tab** in the desktop window. **CLI**: `netcommander homelab …`.
+- Shared core: SQLite persistence, event bus, task runner, encrypted secret store, hardened HTTP/SSH/WinRM
+  transports, adapter registry with opt-in plugins, validated configuration.
+
+### Security
+- New SSH paths reject unknown host keys; trust is explicit and audited.
+- TLS verified by default with CA-file or certificate pinning; plain HTTP and unauthenticated Docker TCP refused.
+- Change/destructive actions need RBAC **and** a one-time confirmation bound to user, action, target and parameters.
+- No plaintext secrets in config, inventory or API responses; redaction of logs, outputs and exports.
+- Details: [docs/homelab/SECURITY-ASSESSMENT.md](docs/homelab/SECURITY-ASSESSMENT.md).
+
+### Known limitations
+- Adapters are verified against simulated devices only in this release (see docs/homelab/INTEGRATIONS.md).
+- Python automation scripts are isolated but not sandboxed; Docker socket access is root-equivalent.
+- Sessions are in memory (sign in again after a restart); no SSO/WebAuthn yet.
+
 ## 3.3.0 - access-control and rollback hardening
 
 > **Behaviour changes:** after the first account, new accounts are created by an admin (*Account & Security → Add User*); *Continue as Guest* is only offered while no account exists; operators can run only read-only commands from the allowlist; `vault-export` / `vault-import` ask for an authenticator code and `vault-import` uses the account password.

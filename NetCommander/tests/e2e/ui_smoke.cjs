@@ -28,6 +28,7 @@ function totp(secret) {
   await page.fill("input[name=otp]", totp(cred.totp));
   await page.click("button[type=submit]");
   await page.waitForSelector("#app:not(.hidden)");
+  errors.length = 0;               // the 401 from the pre-sign-in session probe is expected
   await page.waitForSelector(".score");
   await page.screenshot({ path: `${out}/dashboard-dark.png`, fullPage: true });
   const pages = ["inventory", "discovery", "servers", "virtualization", "containers", "storage", "network", "monitoring", "automation", "backups", "integrations", "security"];

@@ -96,3 +96,17 @@ python -m pytest tests
 
 Linux: run under X11 or Wayland with XWayland; headless servers can use every CLI command (`netcommander backup ...`) without a display.
 Optional SNMPv3 monitoring: `pip install "netcommander[snmp]"`. Standalone binaries: `pip install ".[build]" && pyinstaller packaging/netcommander.spec` (build on each target OS).
+
+
+## Homelab platform (4.0)
+
+Nothing extra is required for the platform itself. Optional extras:
+
+```bash
+pip install 'netcommander[vmware]'    # VMware ESXi / vCenter (pyvmomi)
+pip install 'netcommander[windows]'   # Windows servers and Hyper-V (pywinrm)
+pip install 'netcommander[homelab]'   # both
+```
+
+Start the web dashboard with `netcommander serve --user you@example.com` (or *Homelab → Open Web Dashboard* in the
+desktop window). Full guide: [homelab/DEPLOYMENT.md](homelab/DEPLOYMENT.md).

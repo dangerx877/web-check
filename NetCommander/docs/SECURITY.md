@@ -57,3 +57,15 @@ Open an issue with the steps to reproduce. Do not include real passwords, setup 
 - Headless commands use the sign-in lockout; `vault-export` / `vault-import` additionally require an authenticator or recovery code.
 - The audit log has an anchor file (`audit.jsonl.head`) so truncation is detected, not only edits.
 - Automatic rollback: IOS-XR's `commit confirmed` timer is sent in seconds (it was sent in minutes); verify commands run as operational commands from config mode (`run` / `do`); a failure while applying discards the uncommitted candidate instead of running `rollback 1`, which could have undone an older change.
+
+## Added in 4.0 (homelab platform)
+
+- Integration and server secrets are encrypted with your vault key (`homelab_secrets.json`); configuration,
+  inventory and the API only ever contain references.
+- New SSH connections (servers, NAS, hypervisors) **reject unknown host keys**; trust is explicit and audited.
+- HTTPS APIs are verified by default (CA file or certificate pin for self-signed devices); plain HTTP refused.
+- Power, container and other change actions need the permission **and** a one-time confirmation.
+- Remote scripts that change things need approval by a second person; approval is tied to the exact script.
+- The web dashboard uses password + authenticator sign-in, short sessions, CSRF protection and a strict CSP, and
+  listens on 127.0.0.1 unless TLS is configured.
+- Full assessment, including residual risks: [homelab/SECURITY-ASSESSMENT.md](homelab/SECURITY-ASSESSMENT.md).

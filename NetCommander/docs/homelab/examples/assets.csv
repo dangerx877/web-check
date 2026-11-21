@@ -1,0 +1,5 @@
+name,kind,ip,mac,hostname,os,manufacturer,model,location,tags,notes
+pve1,hypervisor,192.168.1.10,,pve1.lan,Proxmox VE 8,Minisforum,MS-01,rack,prod;compute,Main hypervisor
+nas01,nas,192.168.1.20,00:11:32:aa:bb:cc,nas01.lan,DSM 7.2,Synology,DS920+,rack,prod;storage,
+core-ap,access_point,192.168.1.3,,,,Ubiquiti,U6-Pro,hallway,network,
+printer,printer,192.168.1.50,,,,Brother,HL-L2350,office,,

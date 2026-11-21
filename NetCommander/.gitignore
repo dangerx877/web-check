@@ -27,3 +27,11 @@ prefs.json
 compliance_policy.json
 templates/
 *.lock
+
+# 4.0 homelab platform runtime data
+homelab.db
+homelab.db-wal
+homelab.db-shm
+homelab_secrets.json
+homelab.json
+alerts.jsonl
