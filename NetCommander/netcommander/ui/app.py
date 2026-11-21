@@ -51,6 +51,7 @@ from . import theme
 from .account import AccountDialog
 from .dialogs import CredentialDialog
 from .enterprise import AuditPanel, CompliancePanel, DeploymentsPanel, MonitorPanel, SchedulesPanel, TemplatesPanel
+from .homelab import HomelabPanel
 from .telemetry_tab import TelemetryTab
 from .topology import TopologyCanvas
 
@@ -101,6 +102,7 @@ class NetworkManagerApp(ctk.CTk):
             "stage_start": lambda _p: self.deploy_panel.refresh(),
             "stage_done": lambda _p: self.deploy_panel.refresh(),
             "enable_run": lambda _p: self.run_btn.configure(state="normal"),
+            "homelab_text": lambda text: self.homelab_panel.show(text),
             "enable_backup": lambda _p: self.backup_btn.configure(state="normal", text="Backup Config"),
         }
 
@@ -133,6 +135,7 @@ class NetworkManagerApp(ctk.CTk):
         self.monitor.stop()
         self.monitor_panel.stop()
         self.services.scheduler.stop()
+        self.homelab_panel.stop()
         self.services.audit("session.end")
         try:
             self.services.prefs.set(strict_hostkeys=self.settings.strict_hostkeys,
@@ -173,6 +176,7 @@ class NetworkManagerApp(ctk.CTk):
         self.deploy_panel = DeploymentsPanel(tabs.add("Deployments"), self)
         self.schedules_panel = SchedulesPanel(tabs.add("Schedules"), self)
         self.audit_panel = AuditPanel(tabs.add("Audit Log"), self)
+        self.homelab_panel = HomelabPanel(tabs.add("Homelab"), self)
         self.monitor_panel.start()
         if not self.guest:
             self.services.scheduler.start()

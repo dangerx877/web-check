@@ -206,7 +206,8 @@ class Database:
 
     def events(self, limit: int = 200, since: float = 0.0, target: str | None = None,
                severity: str | None = None) -> list[dict[str, Any]]:
-        q, args = "SELECT * FROM events WHERE ts >= ?", [since]
+        q = "SELECT * FROM events WHERE ts >= ?"
+        args: list[Any] = [since]
         if target:
             q += " AND target = ?"
             args.append(target)

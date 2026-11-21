@@ -226,7 +226,7 @@ class WinRmRunner:
                 self._session = self._factory(self.target)
             else:
                 try:
-                    import winrm  # type: ignore[import-not-found]
+                    import winrm
                 except ImportError as exc:
                     raise IntegrationError("Windows management needs the optional 'pywinrm' package: "
                                            "pip install 'netcommander[windows]'.") from exc

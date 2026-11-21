@@ -23,6 +23,7 @@ DEFAULTS: dict[str, Any] = {
         "event_retention_days": 90,
         "workers": 16,
         "ping_timeout": 2.0,
+        "auto_checks": True,             # add a reachability check for every asset with an IP address
     },
     "discovery": {
         "max_hosts": 1024,               # refuse to sweep more than this many addresses in one run
@@ -56,7 +57,8 @@ DEFAULTS: dict[str, Any] = {
 
 _TYPES: dict[str, dict[str, tuple[type, ...]]] = {
     "monitoring": {"interval_seconds": (int,), "collect_interval_seconds": (int,), "retention_days": (int,),
-                   "event_retention_days": (int,), "workers": (int,), "ping_timeout": (int, float)},
+                   "event_retention_days": (int,), "workers": (int,), "ping_timeout": (int, float),
+                   "auto_checks": (bool,)},
     "discovery": {"max_hosts": (int,), "ports": (list,), "timeout": (int, float), "workers": (int,),
                   "reverse_dns": (bool,)},
     "api": {"bind": (str,), "port": (int,), "tls_cert": (str,), "tls_key": (str,), "session_idle_minutes": (int,),
@@ -103,7 +105,7 @@ def validate(raw: Mapping[str, Any]) -> dict[str, Any]:
                 problems.append(f"{section}.{key} must be {types[0].__name__}")
                 continue
             rng = _RANGES.get((section, key))
-            if rng and not rng[0] <= val <= rng[1]:
+            if rng and not rng[0] <= float(val) <= rng[1]:  # type: ignore[arg-type]  # int/float checked above
                 problems.append(f"{section}.{key} must be between {rng[0]:g} and {rng[1]:g}")
                 continue
             cfg[section][key] = val

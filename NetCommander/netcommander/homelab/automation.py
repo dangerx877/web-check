@@ -284,7 +284,7 @@ class AutomationCenter:
         if s.kind == "python" and targets:
             raise ValidationError("Python scripts run on the NetCommander host; do not pass targets.")
         need = self.needs_approval(s.risk) and not via_policy
-        run = {"id": new_id("run"), "script_id": s.id, "script_name": s.name, "kind": s.kind, "risk": s.risk,
+        run: dict[str, Any] = {"id": new_id("run"), "script_id": s.id, "script_name": s.name, "kind": s.kind, "risk": s.risk,
                "sha256": s.sha256, "params": dict(params or {}), "targets": list(targets), "requested_by": user,
                "note": note[:500], "created": self._clock(), "status": "pending_approval" if need else "approved",
                "approved_by": via_policy and f"policy:{via_policy}" or "", "decided": None, "started": None,
@@ -391,14 +391,14 @@ class AutomationCenter:
         require(role, Permission.MANAGE_AUTOMATION)
         if not name.strip() or not steps:
             raise ValidationError("A workflow needs a name and at least one step.")
-        clean = []
+        clean: list[dict[str, Any]] = []
         for st in steps:
             s = self.script(str(st.get("script_id")))
             s.render(st.get("params") or {})
             clean.append({"script_id": s.id, "targets": list(st.get("targets") or []), "params": dict(st.get("params") or {}),
                           "continue_on_error": bool(st.get("continue_on_error"))})
         risk = max((self.script(st["script_id"]).risk for st in clean), key=lambda r: RISK_RANK[r])
-        wf = {"id": wid or new_id("wf"), "name": name.strip()[:100], "steps": clean, "risk": risk, "created_by": user}
+        wf: dict[str, Any] = {"id": wid or new_id("wf"), "name": name.strip()[:100], "steps": clean, "risk": risk, "created_by": user}
         self.db.put(WORKFLOWS, wf["id"], wf)
         self._audit(user, "automation.workflow.save", wf["id"], "ok", f"{wf['name']} risk={risk}")
         return wf

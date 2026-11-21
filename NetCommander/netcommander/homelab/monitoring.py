@@ -20,7 +20,7 @@ import statistics
 import threading
 import time
 import urllib.parse
-from collections.abc import Callable, Iterable, Mapping
+from collections.abc import Callable, Iterable, Mapping, Sequence
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, dataclass, field
 from typing import Any
@@ -129,7 +129,7 @@ def cert_days_left(host: str, port: int, timeout: float = 5.0, now: float | None
             cert = s.getpeercert()
     except (OSError, ssl.SSLError):
         return None
-    exp = ssl.cert_time_to_seconds(cert["notAfter"]) if cert and cert.get("notAfter") else None
+    exp = ssl.cert_time_to_seconds(str(cert["notAfter"])) if cert and cert.get("notAfter") else None
     return round((exp - (now or time.time())) / 86400, 1) if exp else None
 
 
@@ -282,16 +282,16 @@ class MonitoringEngine:
         merged: dict[str, dict[str, float]] = {}
         for c in checks:
             res = results[c.id]
-            target = merged.setdefault(c.target, {})
+            bucket = merged.setdefault(c.target, {})
             if c.type == "reachability":
-                target.update(res)
+                bucket.update(res)
             else:
                 prefix = f"{c.type}.{c.port or c.name or c.id}."
-                target.update({prefix + k: v for k, v in res.items()})
+                bucket.update({prefix + k: v for k, v in res.items()})
                 if res.get("up", 1.0) < 1:
-                    target["services_down"] = target.get("services_down", 0) + 1
+                    bucket["services_down"] = bucket.get("services_down", 0) + 1
                 if "cert_days" in res:
-                    target["cert_days"] = min(res["cert_days"], target.get("cert_days", 1e9))
+                    bucket["cert_days"] = min(res["cert_days"], bucket.get("cert_days", 1e9))
         for target, metrics in merged.items():
             metrics.setdefault("services_down", 0.0)
             self.ingest(target, metrics)
@@ -405,10 +405,11 @@ IMPORTANT = {"router": 3, "firewall": 3, "switch": 3, "hypervisor": 3, "nas": 3,
              "server": 2, "vm": 1, "container": 1}
 
 
-def infrastructure_score(assets: Iterable[Asset], alerts: list[Mapping[str, Any]]) -> int | None:
+def infrastructure_score(assets: Iterable[Asset], alerts: Sequence[Mapping[str, Any]]) -> int | None:
     total = weight = 0
     for a in assets:
-        if a.status in ("stopped", "paused") or a.source == "discovery" and a.kind == "unknown":
+        # stopped/paused workloads are intentional; never-checked assets say nothing about health
+        if a.status in ("stopped", "paused", "unknown") or (a.source == "discovery" and a.kind == "unknown"):
             continue
         w = IMPORTANT.get(a.kind, 1)
         total += health_score(a, alerts) * w

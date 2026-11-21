@@ -153,7 +153,8 @@ def file_points_remote(runner: Runner, directory: str) -> list[dict[str, Any]]:
 
 
 def proxmox_points(tasks: Iterable[Mapping[str, Any]], vmid: str) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    good, bad = [], []
+    good: list[dict[str, Any]] = []
+    bad: list[dict[str, Any]] = []
     for t in tasks:
         if vmid and str(t.get("vmid")) != str(vmid):
             continue
@@ -166,7 +167,8 @@ def proxmox_points(tasks: Iterable[Mapping[str, Any]], vmid: str) -> tuple[list[
 
 
 def truenas_points(tasks: Iterable[Mapping[str, Any]], name: str) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    good, bad = [], []
+    good: list[dict[str, Any]] = []
+    bad: list[dict[str, Any]] = []
     for t in tasks:
         if name and t.get("name") != name:
             continue
@@ -203,7 +205,7 @@ class BackupCenter:
 
     def record_manual(self, jid: str, ok: bool, size: int | None = None, message: str = "") -> dict[str, Any]:
         self.job(jid)
-        rec = {"id": new_id("br"), "job": jid, "ts": self._clock(), "ok": bool(ok), "size": size, "message": message[:300]}
+        rec: dict[str, Any] = {"id": new_id("br"), "job": jid, "ts": self._clock(), "ok": bool(ok), "size": size, "message": message[:300]}
         self.db.put(RUNS, rec["id"], rec)
         return rec
 

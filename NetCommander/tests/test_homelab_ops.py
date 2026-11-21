@@ -1,7 +1,6 @@
 """IPAM/diagnostics/topology, monitoring + alerting, automation (approvals, policies) and backups."""
 from __future__ import annotations
 
-import sys
 import time
 
 import pytest
@@ -435,3 +434,9 @@ def test_config_bundle_has_no_secrets(db):
     b = backups.config_bundle(db, {"api": {"bind": "127.0.0.1"}}, "4.0.0")
     cfg = b["collections"]["integrations"][0]["config"]
     assert cfg["token_ref"] == "pve.tok" and cfg["password"] == "********"
+
+
+def test_unknown_status_does_not_count_as_healthy():
+    assert monitoring.infrastructure_score([Asset(name="sw", kind="switch", status="unknown")], []) is None
+    mixed = [Asset(name="sw", kind="switch", status="unknown"), Asset(id="s", name="s", kind="server", status="offline")]
+    assert monitoring.infrastructure_score(mixed, []) == 0

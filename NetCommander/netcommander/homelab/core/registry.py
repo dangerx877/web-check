@@ -14,7 +14,7 @@ import logging
 import threading
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, List
 
 from .errors import NotFound, ValidationError
 
@@ -114,9 +114,9 @@ class Registry:
             raise ValidationError(f"Invalid {spec.title} configuration: " + "; ".join(problems), problems)
         return out
 
-    def load_entry_points(self, allow: list[str] | None) -> list[str]:
+    def load_entry_points(self, allow: List[str] | None) -> List[str]:
         """Load allowed plugins (by entry-point name). Returns the names loaded."""
-        loaded: list[str] = []
+        loaded: List[str] = []
         if not allow:
             return loaded
         try:

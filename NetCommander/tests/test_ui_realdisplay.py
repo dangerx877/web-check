@@ -35,8 +35,16 @@ def test_real_window_builds_all_tabs_and_closes(tmp_path):
         app.update_idletasks()
         app.update()
         assert app.services.role.value == "guest" and len(app.store) >= 1
-        for panel in ("monitor_panel", "compliance_panel", "templates_panel", "deploy_panel", "schedules_panel", "audit_panel"):
+        for panel in ("monitor_panel", "compliance_panel", "templates_panel", "deploy_panel", "schedules_panel", "audit_panel",
+                      "homelab_panel"):
             assert getattr(app, panel) is not None
+        import time
+        app.homelab_panel.refresh()                               # 4.0: background refresh reaches the real textbox
+        deadline = time.time() + 10
+        while time.time() < deadline and "Infrastructure health" not in app.homelab_panel.box.get("1.0", "end"):
+            app.update()
+            time.sleep(0.05)
+        assert "Infrastructure health" in app.homelab_panel.box.get("1.0", "end")
         app.compliance_panel.run()
         app.audit_panel.refresh()
         app.update()

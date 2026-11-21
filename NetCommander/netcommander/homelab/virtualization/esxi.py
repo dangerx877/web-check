@@ -21,7 +21,7 @@ MB = 1024 * 1024
 
 def _pyvmomi_connect(host: str, username: str, password: str, port: int, verify_tls: bool, ca_file: str) -> Any:
     try:
-        from pyVim.connect import SmartConnect  # type: ignore[import-not-found]
+        from pyVim.connect import SmartConnect
     except ImportError as exc:
         raise IntegrationError("VMware support needs the optional 'pyvmomi' package: "
                                "pip install 'netcommander[vmware]'.") from exc
@@ -33,7 +33,7 @@ def _pyvmomi_connect(host: str, username: str, password: str, port: int, verify_
 
 
 def _vim_types() -> tuple[Any, Any]:
-    from pyVmomi import vim  # type: ignore[import-not-found]
+    from pyVmomi import vim
     return vim.VirtualMachine, vim.HostSystem
 
 

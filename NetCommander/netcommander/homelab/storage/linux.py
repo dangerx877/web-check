@@ -136,7 +136,9 @@ def parse_exports(text: str) -> list[Share]:
 
 
 def parse_testparm(text: str) -> list[Share]:
-    out, cur, attrs = [], None, {}
+    out: list[Share] = []
+    cur: str | None = None
+    attrs: dict[str, str] = {}
     for line in text.splitlines() + ["[__end__]"]:
         m = re.match(r"^\s*\[(.+)\]\s*$", line)
         if m:
@@ -167,11 +169,11 @@ class LinuxStorageAdapter:
                   "platform": self.platform, "mem_total": int(mem.group(1)) * 1024 if mem else 0,
                   "uptime_s": int(float(out["uptime"].split()[0])) if out["uptime"].strip() else None}
         disks = []
-        for d in parse_lsblk(out["lsblk"]):
-            tran = str(d.get("tran") or "")
-            disks.append(Disk(name=d["name"], model=str(d.get("model") or "").strip(), serial=str(d.get("serial") or ""),
-                              size=int(d.get("size") or 0),
-                              type="NVMe" if tran == "nvme" else ("HDD" if str(d.get("rota")) in ("1", "True", "true") else "SSD")))
+        for blk in parse_lsblk(out["lsblk"]):
+            tran = str(blk.get("tran") or "")
+            disks.append(Disk(name=blk["name"], model=str(blk.get("model") or "").strip(), serial=str(blk.get("serial") or ""),
+                              size=int(blk.get("size") or 0),
+                              type="NVMe" if tran == "nvme" else ("HDD" if str(blk.get("rota")) in ("1", "True", "true") else "SSD")))
         pools = parse_zpool_list(out["zpool"])
         zs = parse_zpool_status(out["zstatus"])
         for p in pools:

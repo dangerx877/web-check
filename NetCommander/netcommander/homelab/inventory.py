@@ -218,7 +218,10 @@ class AssetStore:
         ip = obs.get("ip")
         if ip:
             for a in stored:
-                if a.ip == ip and a.kind not in ("vm", "container") and not a.external_id:
+                # discovery may land on a host an integration already reports (same management IP);
+                # never on a VM/container, whose IPs can repeat across isolated networks
+                if a.ip == ip and a.kind not in ("vm", "container") and \
+                        (not a.external_id or a.kind in ("hypervisor", "docker_host", "nas")):
                     return a
         return None
 
@@ -259,6 +262,20 @@ class AssetStore:
             self.bus.emit("asset.status", source, a.id, f"{a.name}: {prev_status} -> {a.status}", severity=sev,
                           previous=prev_status, status=a.status)
         return a, created
+
+    def observe(self, aid: str, obs: Mapping[str, Any]) -> Asset:
+        """Apply collector data to a known asset (respecting locked fields)."""
+        with self._lock:
+            cur = self.get(aid)
+            if aid.startswith("net-"):
+                return cur
+            prev = cur.status
+            a = merge_observation(cur, dict(obs), self._clock()).validate()
+            self.db.put(COLLECTION, aid, a.to_dict())
+        if prev != a.status:
+            sev = "warning" if a.status in ("offline", "degraded") else "info"
+            self.bus.emit("asset.status", "collector", aid, f"{a.name}: {prev} -> {a.status}", severity=sev)
+        return a
 
     def mark_missing(self, integration: str, seen_external_ids: set[str]) -> list[str]:
         """Assets an integration no longer reports are marked offline (never deleted automatically)."""

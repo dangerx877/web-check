@@ -67,7 +67,7 @@ class Ipam:
                 raise ValidationError(f"Gateway {gw} is not inside {net}.")
         if vlan is not None and not 1 <= int(vlan) <= 4094:
             raise ValidationError("VLAN id must be 1-4094.")
-        rec = {"id": new_id("net"), "cidr": str(net), "name": name.strip()[:64], "vlan": int(vlan) if vlan else None,
+        rec: dict[str, Any] = {"id": new_id("net"), "cidr": str(net), "name": name.strip()[:64], "vlan": int(vlan) if vlan else None,
                "gateway": gateway, "dns": dns, "description": description[:500], "site": site[:64]}
         self.db.put(SUBNETS, rec["id"], rec)
         return rec
@@ -83,7 +83,7 @@ class Ipam:
         for r in self.db.all(RESERVATIONS):
             if r["ip"] == addr:
                 raise ValidationError(f"{addr} is already reserved for {r['name']}.")
-        rec = {"id": new_id("ip"), "ip": addr, "name": name[:64], "note": note[:200], "mac": mac}
+        rec: dict[str, Any] = {"id": new_id("ip"), "ip": addr, "name": name[:64], "note": note[:200], "mac": mac}
         self.db.put(RESERVATIONS, rec["id"], rec)
         return rec
 
@@ -163,7 +163,7 @@ class Ipam:
             raise ValidationError("VLAN id must be 1-4094.")
         if not name.strip():
             raise ValidationError("A VLAN needs a name.")
-        rec = {"id": f"vlan-{vid}", "vid": vid, "name": name.strip()[:64], "description": description[:200]}
+        rec: dict[str, Any] = {"id": f"vlan-{vid}", "vid": vid, "name": name.strip()[:64], "description": description[:200]}
         self.db.put(VLANS, rec["id"], rec)
         return rec
 
@@ -204,7 +204,7 @@ class Diagnostics:
         from .discovery import tcp_probe
         self.runner = runner or LocalRunner()
         self.probe = probe or tcp_probe
-        self.resolver = resolver or (lambda h: sorted({i[4][0] for i in socket.getaddrinfo(h, None)}))
+        self.resolver = resolver or (lambda h: sorted({str(i[4][0]) for i in socket.getaddrinfo(h, None)}))
 
     def ping(self, host: str, count: int = 4) -> dict[str, Any]:
         r = self.runner.run(ping_command(host, count), timeout=count * 3 + 5)
@@ -247,7 +247,8 @@ def topology(assets: Iterable[Asset]) -> dict[str, Any]:
     ids = {a.id for a in items}
     nodes = [{"id": a.id, "name": a.name, "kind": a.kind, "status": a.status, "ip": a.ip, "tier": TIERS.get(a.kind, 3),
               "source": a.source} for a in items]
-    edges, seen = [], set()
+    edges: list[dict[str, Any]] = []
+    seen: set[tuple[str, ...]] = set()
     for a in items:
         if a.parent and a.parent in ids:
             key = (a.id, a.parent, "runs_on")
@@ -257,7 +258,7 @@ def topology(assets: Iterable[Asset]) -> dict[str, Any]:
         for lk in a.links:
             if lk.get("to") not in ids:
                 continue
-            pair = tuple(sorted((a.id, lk["to"]))) + (lk["type"],)
+            pair = (*sorted((a.id, str(lk["to"]))), str(lk["type"]))
             if pair in seen:
                 continue
             seen.add(pair)

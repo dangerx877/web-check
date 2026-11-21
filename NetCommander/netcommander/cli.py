@@ -69,6 +69,9 @@ def add_subcommands(sub: argparse._SubParsersAction[argparse.ArgumentParser]) ->
     sub.add_parser("audit-verify", help="verify the audit log's hash chain")
     sub.add_parser("data-dir", help="print the data directory in use")
 
+    from .homelab import cli as homelab_cli  # 4.0: serve + homelab command group
+    homelab_cli.add_subcommands(sub)
+
 
 def _secret(prompt_text: str, env: dict[str, str], prompt: Prompt) -> str:
     return env.get(ENV_VAULT_PASSWORD) or prompt(prompt_text)
@@ -137,6 +140,11 @@ def run(args: argparse.Namespace, paths: Paths, settings: RuntimeSettings, *, en
         (out if ok else err)(f"audit log: {msg}")
         return 0 if ok else 1
 
+    if cmd in ("serve", "homelab"):
+        from .homelab import cli as homelab_cli
+        if not homelab_cli.needs_auth(args):
+            return homelab_cli.run_unauthenticated(args, paths, out, err)
+
     audit = AuditLog(paths.audit, sinks=sinks_from_env(env))
     unlocked = _unlock(args, paths, env, prompt, err, audit)
     if unlocked is None:
@@ -152,6 +160,11 @@ def run(args: argparse.Namespace, paths: Paths, settings: RuntimeSettings, *, en
             audit.record(args.user, f"deny.{p.value}", outcome="denied")
             err(str(exc))
             return False
+
+    if cmd in ("serve", "homelab"):
+        from .homelab import cli as homelab_cli
+        return homelab_cli.run(args, paths, vault, auth, env=env, prompt=prompt, out=out, err=err,
+                               second_factor=lambda: _second_factor(auth, args.user, password, env, prompt, err))
 
     if cmd == "backup":
         if not need(Permission.BACKUP):
