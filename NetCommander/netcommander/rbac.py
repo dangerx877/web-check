@@ -3,7 +3,8 @@
 Three fixed roles keep the model auditable and easy to reason about:
 
 * ``viewer``   – read-only: inventory, health, topology, saved configs, compliance reports.
-* ``operator`` – viewer + run show commands, back up configs, request deployments.
+* ``operator`` – viewer + run show commands, back up configs, request deployments, run discovery and
+  read-only automation (4.0).
 * ``admin``    – everything, including config push, approving deployments, user/role management,
   vault export and settings.
 
@@ -55,16 +56,26 @@ class Permission(str, Enum):
     EXPORT_VAULT = "export_vault"
     CHANGE_SETTINGS = "change_settings"
     READ_AUDIT = "read_audit"
+    # ---- 4.0 homelab platform ------------------------------------------------------------------
+    DISCOVER = "discover"                        # actively scan subnets / poll integrations (read-only)
+    CONTROL_WORKLOADS = "control_workloads"      # start/stop/restart VMs and containers
+    RUN_AUTOMATION = "run_automation"            # run (approved) automation scripts and workflows
+    MANAGE_AUTOMATION = "manage_automation"      # create/edit/delete automation scripts and policies
+    APPROVE_AUTOMATION = "approve_automation"    # approve someone else's automation run
+    MANAGE_INTEGRATIONS = "manage_integrations"  # add/remove adapters and their stored secrets
 
 
 _P = Permission
 ROLE_PERMISSIONS: dict[Role, frozenset[Permission]] = {
     Role.VIEWER: frozenset({_P.VIEW}),
-    Role.OPERATOR: frozenset({_P.VIEW, _P.RUN_SHOW, _P.BACKUP, _P.EDIT_INVENTORY, _P.REQUEST_DEPLOY}),
+    Role.OPERATOR: frozenset({_P.VIEW, _P.RUN_SHOW, _P.BACKUP, _P.EDIT_INVENTORY, _P.REQUEST_DEPLOY,
+                              _P.DISCOVER, _P.RUN_AUTOMATION}),
     Role.ADMIN: frozenset(Permission),
     # Guest keeps the original single-user workflow (run, push, back up) but has no accounts, no
     # second person to approve things, and nothing durable to export or schedule.
-    Role.GUEST: frozenset(Permission) - {_P.APPROVE_DEPLOY, _P.MANAGE_USERS, _P.EXPORT_VAULT, _P.MANAGE_SCHEDULES},
+    # 4.0: no stored integration secrets and no second person to approve automation either.
+    Role.GUEST: frozenset(Permission) - {_P.APPROVE_DEPLOY, _P.MANAGE_USERS, _P.EXPORT_VAULT, _P.MANAGE_SCHEDULES,
+                                         _P.APPROVE_AUTOMATION, _P.MANAGE_INTEGRATIONS},
 }
 ASSIGNABLE_ROLES = (Role.VIEWER, Role.OPERATOR, Role.ADMIN)
 
