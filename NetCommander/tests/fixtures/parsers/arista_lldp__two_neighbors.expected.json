@@ -1,0 +1,14 @@
+[
+  {
+    "local_intf": "Ethernet1",
+    "mgmt_ip": "10.1.1.1",
+    "neighbor": "SPINE1",
+    "remote_intf": "Ethernet49"
+  },
+  {
+    "local_intf": "Ethernet2",
+    "mgmt_ip": "",
+    "neighbor": "SPINE2",
+    "remote_intf": "Ethernet50"
+  }
+]

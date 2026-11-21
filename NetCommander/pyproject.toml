@@ -1,0 +1,91 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "netcommander"
+version = "3.3.0"
+description = "Multi-vendor network CLI/config runner with encrypted credential vault, MFA login, health monitoring, topology map and config backup/diff."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+keywords = ["network", "netmiko", "ssh", "lldp", "cdp", "config-backup", "automation"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: X11 Applications",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: System :: Networking",
+]
+dependencies = [
+    "customtkinter>=5.2",
+    "matplotlib>=3.7",
+    "networkx>=3.0",
+    "netmiko>=4.2",
+    "ntc-templates>=4.0",
+    "cryptography>=41.0",
+    "pyotp>=2.9",
+]
+
+[project.optional-dependencies]
+snmp = ["pysnmp>=6.1"]
+build = ["pyinstaller>=6.0"]
+dev = ["pytest>=7.0", "pytest-cov>=4.0", "ruff>=0.4", "mypy>=1.8", "pre-commit>=3.0"]
+
+[project.scripts]
+netcommander = "netcommander.__main__:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["netcommander*"]
+
+[tool.setuptools.package-data]
+netcommander = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-ra -q"
+filterwarnings = ["error::pytest.PytestUnraisableExceptionWarning"]
+markers = ["display: needs a real display (run under xvfb-run on Linux CI)"]
+
+[tool.coverage.run]
+source = ["netcommander"]
+omit = ["netcommander/ui/*", "netcommander/__main__.py"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["E501", "B008", "UP006", "UP007", "UP035", "UP037"]
+
+[tool.ruff.lint.per-file-ignores]
+# Tests favour compact one-line fakes, and pytest fixtures imported from another test module look
+# like redefinitions when used as arguments.
+"tests/*" = ["E701", "E702", "E731", "F811"]
+
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+warn_unused_ignores = true
+exclude = ["tests/"]
+
+[[tool.mypy.overrides]]
+module = [
+    "netcommander.audit", "netcommander.rbac", "netcommander.redact", "netcommander.compliance",
+    "netcommander.templates", "netcommander.deploy", "netcommander.rollback", "netcommander.scheduler",
+    "netcommander.monitors", "netcommander.prefs", "netcommander.jobs", "netcommander.services",
+    "netcommander.store", "netcommander.batch", "netcommander.telemetry", "netcommander.topology",
+    "netcommander.cmdpolicy",
+]
+disallow_untyped_defs = true

@@ -1,0 +1,14 @@
+[
+  {
+    "local_intf": "ether1",
+    "mgmt_ip": "10.0.0.2",
+    "neighbor": "SW4",
+    "remote_intf": "ether2"
+  },
+  {
+    "local_intf": "ether5",
+    "mgmt_ip": "10.0.0.9",
+    "neighbor": "EDGE-9",
+    "remote_intf": "sfp1"
+  }
+]

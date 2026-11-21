@@ -1,0 +1,7 @@
+customtkinter>=5.2
+matplotlib>=3.7
+networkx>=3.0
+netmiko>=4.2
+ntc-templates>=4.0
+cryptography>=41.0
+pyotp>=2.9

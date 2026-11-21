@@ -1,0 +1,2 @@
+ 0 interface=ether1 address=10.0.0.2 mac-address=AA:BB:CC:DD:EE:FF identity="SW4" platform="MikroTik" interface-name=ether2
+ 1 interface=ether5 address=10.0.0.9 identity=EDGE-9 port-id=sfp1

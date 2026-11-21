@@ -1,0 +1,29 @@
+# Secrets and local data - never commit these
+users_auth.json
+users_auth.corrupt-*
+vault.enc
+vaults/
+backups/
+topology.json
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.log
+
+# NetCommander runtime data
+audit.jsonl
+deployments.json
+schedules.json
+monitors.json
+prefs.json
+compliance_policy.json
+templates/
+*.lock

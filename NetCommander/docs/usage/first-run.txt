@@ -1,0 +1,16 @@
+NETCOMMANDER 3.3.0 - FIRST RUN
+==============================
+
+  1. On a new installation, choose Register. Enter an email and a password of
+     at least 10 characters. This first account is the administrator. (On a
+     computer that already has accounts, ask an administrator to create yours
+     in Account, Add User; you will get a temporary password and a key.)
+  2. Add the shown setup key to an authenticator app. The key is hidden until
+     you press Reveal.
+  3. Sign in with the 6-digit code. If your account was created for you,
+     change the temporary password in Account. (Before any account exists,
+     Guest lets you try the app without one.)
+  4. Add one lab device, enter its SSH credentials, and press Backup Config as
+     a first test.
+  5. In Account, generate recovery codes and export a vault recovery file.
+     Store both offline.

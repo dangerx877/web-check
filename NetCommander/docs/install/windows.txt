@@ -1,0 +1,34 @@
+NETCOMMANDER 3.3.0 - INSTALLING ON WINDOWS
+==========================================
+
+  1. Install Python 3.11 or 3.12 from python.org. On the first installer
+     screen tick "Add python.exe to PATH" and keep tcl/tk ticked. Check in
+     Command Prompt: python --version (or py -3 --version).
+  2. Extract NetCommander-3.3.0.zip to a normal folder such as C:\NetCommander
+     (avoid OneDrive-synced folders).
+  3. Double-click install.bat. It creates a .venv folder and downloads the
+     dependencies (a few minutes). Wait for "Done."
+  4. Double-click run.bat to start the application. If the window closes
+     immediately, open Command Prompt in the folder and run run.bat to read
+     the error.
+
+
+By hand on Windows
+
+    py -3 -m venv .venv
+    .venv\Scripts\activate
+    pip install -r requirements.txt
+    pip install -e .
+    python -m netcommander
+
+
+Windows notes
+
+  - Data folder: %APPDATA%\NetCommander (or the project folder when run from
+    an unzipped checkout). Run: netcommander data-dir to see it.
+  - Windows ignores Unix file permissions. Keep the data folder in your user
+    profile and use BitLocker if possible.
+  - Strict SSH host keys use %USERPROFILE%\.ssh\known_hosts.
+  - Command-line tools: open Command Prompt in the folder, run
+    .venv\Scripts\activate, then netcommander --help.
+  - The .sh files are for Linux and macOS; ignore them on Windows.

@@ -1,0 +1,29 @@
+NETCOMMANDER 3.3.0 - TROUBLESHOOTING
+====================================
+
+  - "Python not found" (Windows): reinstall Python with Add to PATH ticked, or
+    use py -3.
+  - "No module named tkinter" (Linux): install your distribution's Tk package
+    (step 1 of the Linux section).
+  - Window does not open over SSH: you need a desktop session; use the
+    command-line tools instead.
+  - Package install fails: check proxy/firewall settings, then run pip install
+    -r requirements.txt manually and read the error.
+  - Host-key error when connecting: strict mode is on and the device is not
+    trusted yet. Accept the fingerprint prompt, or connect once with a normal
+    ssh client.
+  - Login rejected repeatedly: after several failures the batch stops to
+    protect the account. Fix the password and retry.
+  - Locked out of the app: wait for the lockout to expire, or use a recovery
+    code in place of the authenticator code.
+  - Register button is greyed out: accounts already exist on this computer.
+    Ask an administrator to create one for you (Account, Add User).
+  - Forgot the password or lost the phone: an administrator uses Account,
+    Reset User. You get a temporary password and a new authenticator key;
+    your old vault is set aside. Restore device passwords and old backups
+    with: netcommander vault-import --user you@example.com recovery.json
+    (it asks for your password and authenticator code). Without the password
+    or the recovery file the old vault and its backups cannot be recovered.
+  - Command-line export or import asks for a code: vault-export and
+    vault-import need your authenticator or recovery code as well as the
+    password (or set NETCOMMANDER_OTP).

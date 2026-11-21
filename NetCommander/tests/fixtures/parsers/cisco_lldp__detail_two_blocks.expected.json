@@ -1,0 +1,14 @@
+[
+  {
+    "local_intf": "Gi0/1",
+    "mgmt_ip": "10.0.0.2",
+    "neighbor": "SW2",
+    "remote_intf": "Gi0/2"
+  },
+  {
+    "local_intf": "Gi0/3",
+    "mgmt_ip": "",
+    "neighbor": "SW3",
+    "remote_intf": "access uplink"
+  }
+]

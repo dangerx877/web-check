@@ -1,0 +1,12 @@
+NETCOMMANDER 3.3.0 - OPTIONAL EXTRAS
+====================================
+
+  - SNMPv3 monitoring: pip install pysnmp
+  - Standalone app (build on each OS): pip install ".[build]" then pyinstaller
+    packaging/netcommander.spec
+  - Copy the audit log off the machine: set
+    NETCOMMANDER_AUDIT_COPY=/path/file.jsonl and/or
+    NETCOMMANDER_AUDIT_SYSLOG=host:514 (tcp://host:6514 for TCP).
+  - Force strict SSH host keys: set NET_SSH_STRICT_HOSTKEYS=1. Guest mode is
+    off once any account exists; to disable it on a new installation too,
+    set NET_DISABLE_GUEST=1.

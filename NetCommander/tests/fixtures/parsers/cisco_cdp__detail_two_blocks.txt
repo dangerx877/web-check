@@ -1,0 +1,9 @@
+----------------------------------------
+Device ID: SW3.lab
+Entry address(es):
+  IP address: 10.0.0.3
+Platform: cisco WS-C3850,  Capabilities: Switch IGMP
+Interface: GigabitEthernet0/3,  Port ID (outgoing port): GigabitEthernet0/4
+----------------------------------------
+Device ID: router9
+Interface: Gi0/9,  Port ID (outgoing port): Gi0/10

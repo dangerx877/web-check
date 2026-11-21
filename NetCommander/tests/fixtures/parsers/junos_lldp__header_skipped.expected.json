@@ -1,0 +1,14 @@
+[
+  {
+    "local_intf": "ge-0/0/0",
+    "mgmt_ip": "",
+    "neighbor": "SW2",
+    "remote_intf": "ge-0/0/1"
+  },
+  {
+    "local_intf": "ge-0/0/1",
+    "mgmt_ip": "",
+    "neighbor": "CORE1",
+    "remote_intf": "xe-0/1/0"
+  }
+]

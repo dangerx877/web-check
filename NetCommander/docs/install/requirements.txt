@@ -1,0 +1,9 @@
+NETCOMMANDER 3.3.0 - REQUIREMENTS
+=================================
+
+  - Python 3.9 or newer, with Tk support (tkinter).
+  - A desktop session for the window. The command-line tools also work on
+    servers without a display.
+  - Network access from your computer to the devices (SSH, normally TCP port
+    22).
+  - Internet access during installation, to download the Python packages.

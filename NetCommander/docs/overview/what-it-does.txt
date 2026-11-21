@@ -1,0 +1,113 @@
+NETCOMMANDER 3.3.0 - WHAT NETCOMMANDER DOES
+===========================================
+
+NetCommander is a desktop application, with a command-line companion, for
+managing many routers, switches and firewalls over SSH. It supports Cisco
+IOS/IOS-XE/NX-OS/IOS-XR, Juniper Junos, HPE Comware and HPE/Aruba ProCurve,
+Dell OS10, Nokia SR OS and SR Linux, plus Arista, Huawei, Extreme, Fortinet,
+Palo Alto, MikroTik and Linux. Automatic rollback is available on Junos, IOS-
+XR, IOS and IOS-XE only; on Dell, HPE and Nokia it is refused rather than
+pushed without a safety net.
+
+
+Accounts and security
+
+  - Sign-in uses email, password and an authenticator-app code (TOTP).
+    Repeated failures cause growing lockouts and a code cannot be reused.
+  - Single-use recovery codes can stand in for the authenticator; the
+    authenticator key can be rotated.
+  - The first account registered on a computer is the administrator. Later
+    accounts are created by an administrator, start with a temporary password
+    and are asked to choose their own. Administrators can also reset a user
+    who forgot the password or lost the phone.
+  - Guest mode needs no account and saves nothing. It is offered only until
+    the first account exists. Backups made in a guest session are plain
+    files.
+  - Device passwords are kept in an encrypted per-user vault. Changing the
+    vault password keeps old encrypted backups readable. A passphrase-
+    protected recovery file can be exported.
+  - Roles: viewer (look only), operator (run read-only commands such as show,
+    display, ping and traceroute, back up, request deployments) and admin
+    (also push config or run any other command, approve deployments, manage
+    users and schedules, export the vault).
+
+
+Inventory and running commands
+
+  - Keep a device list: add by hand, import CSV (including SSH-key logins
+    through a key_file column) or load/save JSON. The list can be filtered.
+  - Run a script of commands on the selected device or on all devices in
+    parallel. Ctrl+Enter runs the batch (Cmd+Return on macOS).
+  - Config Set mode pushes configuration. Before and after every push the app
+    saves the device config and shows a diff. If the pre-change backup fails,
+    nothing is pushed.
+  - Only commands on a per-platform read-only list run without push rights;
+    anything else (including abbreviations such as "confi t" or "relo") needs
+    admin rights. Risky commands also ask for confirmation.
+  - A batch stops itself if several logins in a row are rejected, to avoid
+    locking out the account. SSH timeouts are retried with growing delays;
+    authentication failures are never retried.
+  - Dry-run Preview compares a script with the latest backup without
+    contacting the device. It is a text comparison, not a simulation.
+
+
+Backups and diffs
+
+  - Backup Config saves each running config as a timestamped, encrypted
+    .cfg.enc file. Diff Last 2 compares the two newest backups and ignores
+    timestamp noise.
+  - Retention keeps only the newest N backups per device.
+  - Scheduled backups run on an interval or daily and flag which devices
+    changed since last time. They run while the app is open, or unattended
+    with the schedule-run command.
+  - Diffs and previews hide secrets such as enable secrets and SNMP
+    communities by default.
+
+
+Topology and health
+
+  - Auto-Discover Links reads LLDP/CDP neighbour tables and draws a live map
+    with interface names. Export the map as PNG or the links as CSV.
+  - The health monitor measures latency, jitter and packet loss, reads the SSH
+    banner, marks devices up/degraded/down and alerts on state changes.
+  - The Monitoring tab polls SNMPv3 agents (not v1/v2c) and REST/JSON
+    endpoints, keeping history, availability, counter rates, threshold alerts
+    and a sparkline. SNMP needs the pysnmp package.
+
+
+Safe change management
+
+  - Staged deployments: a canary device first, then batches. One person
+    requests, a different admin approves (two approvals can be required). Any
+    edit voids the approval. A failed stage halts the rollout.
+  - Automatic rollback uses a timer on the device, so a change reverts even if
+    it cuts off your access. Supported: Junos and IOS-XR (commit confirmed),
+    Cisco IOS/IOS-XE (revert timer; the archive feature must be enabled on the
+    device). Other platforms are refused when rollback is on.
+  - Compliance: a JSON policy of rules (must contain, must not contain, count)
+    is checked across all devices, against saved backups or live configs, with
+    a score and CSV report.
+  - Templates: configuration text with {{variables}} and defaults, filled in
+    per device. Every missing variable is reported before anything is sent.
+  - Audit log: sign-ins, commands, pushes, backups, approvals, denied actions
+    and host-key decisions are recorded in a hash-chained file that reveals
+    edits. Secrets are redacted. Entries can also be copied to a file or
+    syslog server.
+  - SSH host keys: with strict mode on, an unknown device's fingerprint is
+    shown and trusted only if you confirm.
+
+
+Command line (no window needed)
+
+    netcommander backup --user you@example.com [--keep 30] [DEVICE ...]
+    netcommander compliance --user you@example.com [--live] [--csv report.csv]
+    netcommander schedule-run --user you@example.com [--once]
+    netcommander vault-export --user you@example.com FILE
+    netcommander vault-import --user you@example.com FILE
+    netcommander audit-verify
+    netcommander data-dir
+
+Exit codes: 0 success, 1 finished with failures, 2 usage or configuration
+error, 3 authentication or permission problem. The vault password is prompted
+for, or read from the NETCOMMANDER_VAULT_PASSWORD environment variable
+(visible to other processes of the same OS user, so prefer the prompt).

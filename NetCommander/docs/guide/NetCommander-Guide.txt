@@ -1,0 +1,281 @@
+NETCOMMANDER 3.3.0 - WHAT IT DOES AND HOW TO INSTALL IT
+=======================================================
+
+
+1. WHAT NETCOMMANDER DOES
+-------------------------
+
+NetCommander is a desktop application, with a command-line companion, for
+managing many routers, switches and firewalls over SSH. It supports Cisco
+IOS/IOS-XE/NX-OS/IOS-XR, Juniper Junos, HPE Comware and HPE/Aruba ProCurve,
+Dell OS10, Nokia SR OS and SR Linux, plus Arista, Huawei, Extreme, Fortinet,
+Palo Alto, MikroTik and Linux. Automatic rollback is available on Junos, IOS-
+XR, IOS and IOS-XE only; on Dell, HPE and Nokia it is refused rather than
+pushed without a safety net.
+
+
+Accounts and security
+
+  - Sign-in uses email, password and an authenticator-app code (TOTP).
+    Repeated failures cause growing lockouts and a code cannot be reused.
+  - Single-use recovery codes can stand in for the authenticator; the
+    authenticator key can be rotated.
+  - The first account registered on a computer is the administrator. Later
+    accounts are created by an administrator, start with a temporary password
+    and are asked to choose their own. Administrators can also reset a user
+    who forgot the password or lost the phone.
+  - Guest mode needs no account and saves nothing. It is offered only until
+    the first account exists. Backups made in a guest session are plain
+    files.
+  - Device passwords are kept in an encrypted per-user vault. Changing the
+    vault password keeps old encrypted backups readable. A passphrase-
+    protected recovery file can be exported.
+  - Roles: viewer (look only), operator (run read-only commands such as show,
+    display, ping and traceroute, back up, request deployments) and admin
+    (also push config or run any other command, approve deployments, manage
+    users and schedules, export the vault).
+
+
+Inventory and running commands
+
+  - Keep a device list: add by hand, import CSV (including SSH-key logins
+    through a key_file column) or load/save JSON. The list can be filtered.
+  - Run a script of commands on the selected device or on all devices in
+    parallel. Ctrl+Enter runs the batch (Cmd+Return on macOS).
+  - Config Set mode pushes configuration. Before and after every push the app
+    saves the device config and shows a diff. If the pre-change backup fails,
+    nothing is pushed.
+  - Only commands on a per-platform read-only list run without push rights;
+    anything else (including abbreviations such as "confi t" or "relo") needs
+    admin rights. Risky commands also ask for confirmation.
+  - A batch stops itself if several logins in a row are rejected, to avoid
+    locking out the account. SSH timeouts are retried with growing delays;
+    authentication failures are never retried.
+  - Dry-run Preview compares a script with the latest backup without
+    contacting the device. It is a text comparison, not a simulation.
+
+
+Backups and diffs
+
+  - Backup Config saves each running config as a timestamped, encrypted
+    .cfg.enc file. Diff Last 2 compares the two newest backups and ignores
+    timestamp noise.
+  - Retention keeps only the newest N backups per device.
+  - Scheduled backups run on an interval or daily and flag which devices
+    changed since last time. They run while the app is open, or unattended
+    with the schedule-run command.
+  - Diffs and previews hide secrets such as enable secrets and SNMP
+    communities by default.
+
+
+Topology and health
+
+  - Auto-Discover Links reads LLDP/CDP neighbour tables and draws a live map
+    with interface names. Export the map as PNG or the links as CSV.
+  - The health monitor measures latency, jitter and packet loss, reads the SSH
+    banner, marks devices up/degraded/down and alerts on state changes.
+  - The Monitoring tab polls SNMPv3 agents (not v1/v2c) and REST/JSON
+    endpoints, keeping history, availability, counter rates, threshold alerts
+    and a sparkline. SNMP needs the pysnmp package.
+
+
+Safe change management
+
+  - Staged deployments: a canary device first, then batches. One person
+    requests, a different admin approves (two approvals can be required). Any
+    edit voids the approval. A failed stage halts the rollout.
+  - Automatic rollback uses a timer on the device, so a change reverts even if
+    it cuts off your access. Supported: Junos and IOS-XR (commit confirmed),
+    Cisco IOS/IOS-XE (revert timer; the archive feature must be enabled on the
+    device). Other platforms are refused when rollback is on.
+  - Compliance: a JSON policy of rules (must contain, must not contain, count)
+    is checked across all devices, against saved backups or live configs, with
+    a score and CSV report.
+  - Templates: configuration text with {{variables}} and defaults, filled in
+    per device. Every missing variable is reported before anything is sent.
+  - Audit log: sign-ins, commands, pushes, backups, approvals, denied actions
+    and host-key decisions are recorded in a hash-chained file that reveals
+    edits. Secrets are redacted. Entries can also be copied to a file or
+    syslog server.
+  - SSH host keys: with strict mode on, an unknown device's fingerprint is
+    shown and trusted only if you confirm.
+
+
+Command line (no window needed)
+
+    netcommander backup --user you@example.com [--keep 30] [DEVICE ...]
+    netcommander compliance --user you@example.com [--live] [--csv report.csv]
+    netcommander schedule-run --user you@example.com [--once]
+    netcommander vault-export --user you@example.com FILE
+    netcommander vault-import --user you@example.com FILE
+    netcommander audit-verify
+    netcommander data-dir
+
+Exit codes: 0 success, 1 finished with failures, 2 usage or configuration
+error, 3 authentication or permission problem. The vault password is prompted
+for, or read from the NETCOMMANDER_VAULT_PASSWORD environment variable
+(visible to other processes of the same OS user, so prefer the prompt).
+
+
+2. REQUIREMENTS
+---------------
+
+  - Python 3.9 or newer, with Tk support (tkinter).
+  - A desktop session for the window. The command-line tools also work on
+    servers without a display.
+  - Network access from your computer to the devices (SSH, normally TCP port
+    22).
+  - Internet access during installation, to download the Python packages.
+
+
+3. INSTALLING ON WINDOWS
+------------------------
+
+  1. Install Python 3.11 or 3.12 from python.org. On the first installer
+     screen tick "Add python.exe to PATH" and keep tcl/tk ticked. Check in
+     Command Prompt: python --version (or py -3 --version).
+  2. Extract NetCommander-3.3.0.zip to a normal folder such as C:\NetCommander
+     (avoid OneDrive-synced folders).
+  3. Double-click install.bat. It creates a .venv folder and downloads the
+     dependencies (a few minutes). Wait for "Done."
+  4. Double-click run.bat to start the application. If the window closes
+     immediately, open Command Prompt in the folder and run run.bat to read
+     the error.
+
+
+By hand on Windows
+
+    py -3 -m venv .venv
+    .venv\Scripts\activate
+    pip install -r requirements.txt
+    pip install -e .
+    python -m netcommander
+
+
+Windows notes
+
+  - Data folder: %APPDATA%\NetCommander (or the project folder when run from
+    an unzipped checkout). Run: netcommander data-dir to see it.
+  - Windows ignores Unix file permissions. Keep the data folder in your user
+    profile and use BitLocker if possible.
+  - Strict SSH host keys use %USERPROFILE%\.ssh\known_hosts.
+  - Command-line tools: open Command Prompt in the folder, run
+    .venv\Scripts\activate, then netcommander --help.
+  - The .sh files are for Linux and macOS; ignore them on Windows.
+
+
+4. INSTALLING ON LINUX
+----------------------
+
+  1. Install Python, venv and Tk for your distribution:
+      Debian/Ubuntu/Mint:  sudo apt install python3 python3-venv python3-tk
+      Fedora/RHEL:         sudo dnf install python3 python3-tkinter
+      Arch/Manjaro:        sudo pacman -S python tk
+      openSUSE:            sudo zypper install python3 python3-tk
+      Alpine:              sudo apk add python3 py3-tkinter
+  2. Unzip: unzip NetCommander-3.3.0.zip && cd NetCommander
+  3. Run: ./install.sh   (if it is not executable: bash install.sh)
+  4. Start: ./run.sh   (or: bash run.sh)
+
+
+By hand on Linux
+
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install -r requirements.txt
+    pip install -e .
+    python -m netcommander
+
+
+Linux notes
+
+  - Data folder: ~/.local/share/netcommander (or $XDG_DATA_HOME/netcommander).
+    An existing ~/.netcommander is still used.
+  - Works under X11, and under Wayland through XWayland.
+  - On a server without a display, skip the window and use the command-line
+    tools after activating the environment.
+  - "Open Backups" uses xdg-open; if it is missing, the app shows the folder
+    path instead.
+  - Unattended backups: run netcommander backup from cron, or netcommander
+    schedule-run as a systemd service. Give the vault password through a
+    protected environment file rather than the command line.
+
+
+5. OPTIONAL EXTRAS
+------------------
+
+  - SNMPv3 monitoring: pip install pysnmp
+  - Standalone app (build on each OS): pip install ".[build]" then pyinstaller
+    packaging/netcommander.spec
+  - Copy the audit log off the machine: set
+    NETCOMMANDER_AUDIT_COPY=/path/file.jsonl and/or
+    NETCOMMANDER_AUDIT_SYSLOG=host:514 (tcp://host:6514 for TCP).
+  - Force strict SSH host keys: set NET_SSH_STRICT_HOSTKEYS=1. Guest mode is
+    off once any account exists; to disable it on a new installation too,
+    set NET_DISABLE_GUEST=1.
+
+
+6. FIRST RUN
+------------
+
+  1. On a new installation, choose Register. Enter an email and a password of
+     at least 10 characters. This first account is the administrator. (On a
+     computer that already has accounts, ask an administrator to create yours
+     in Account, Add User; you will get a temporary password and a key.)
+  2. Add the shown setup key to an authenticator app. The key is hidden until
+     you press Reveal.
+  3. Sign in with the 6-digit code. If your account was created for you,
+     change the temporary password in Account. (Before any account exists,
+     Guest lets you try the app without one.)
+  4. Add one lab device, enter its SSH credentials, and press Backup Config as
+     a first test.
+  5. In Account, generate recovery codes and export a vault recovery file.
+     Store both offline.
+
+
+7. TROUBLESHOOTING
+------------------
+
+  - "Python not found" (Windows): reinstall Python with Add to PATH ticked, or
+    use py -3.
+  - "No module named tkinter" (Linux): install your distribution's Tk package
+    (step 1 of the Linux section).
+  - Window does not open over SSH: you need a desktop session; use the
+    command-line tools instead.
+  - Package install fails: check proxy/firewall settings, then run pip install
+    -r requirements.txt manually and read the error.
+  - Host-key error when connecting: strict mode is on and the device is not
+    trusted yet. Accept the fingerprint prompt, or connect once with a normal
+    ssh client.
+  - Login rejected repeatedly: after several failures the batch stops to
+    protect the account. Fix the password and retry.
+  - Locked out of the app: wait for the lockout to expire, or use a recovery
+    code in place of the authenticator code.
+  - Register button is greyed out: accounts already exist on this computer.
+    Ask an administrator to create one for you (Account, Add User).
+  - Forgot the password or lost the phone: an administrator uses Account,
+    Reset User. You get a temporary password and a new authenticator key;
+    your old vault is set aside. Restore device passwords and old backups
+    with: netcommander vault-import --user you@example.com recovery.json
+    (it asks for your password and authenticator code). Without the password
+    or the recovery file the old vault and its backups cannot be recovered.
+  - Command-line export or import asks for a code: vault-export and
+    vault-import need your authenticator or recovery code as well as the
+    password (or set NETCOMMANDER_OTP).
+
+
+8. IMPORTANT LIMITS
+-------------------
+
+NOTE:
+  NetCommander was tested with automated tests against simulated devices. It
+  has not been verified on real devices, on a real desktop session on
+  Windows or macOS, or against real SNMP agents and REST APIs. Vendor
+  support for Juniper, HPE, Dell, Nokia and Cisco follows vendor
+  documentation and has not been checked against real device output. Test on
+  lab equipment first: especially rollback, SNMPv3 and REST monitoring, and
+  strict host-key trust. Config pushes change real devices; review what you
+  send. Upgrading from an earlier version converts the vault to a new format
+  that older versions cannot open, so copy the vaults folder somewhere safe
+  before the first run.
+

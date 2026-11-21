@@ -1,0 +1,3 @@
+# Sample multi-command script (Show / Exec mode). Lines starting with # are ignored.
+show version
+show ip interface brief

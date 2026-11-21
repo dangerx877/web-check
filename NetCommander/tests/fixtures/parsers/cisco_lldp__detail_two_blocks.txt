@@ -1,0 +1,15 @@
+----------------------------------------
+Local Intf: Gi0/1
+Chassis id: 0011.2233.4455
+Port id: Gi0/2
+Port Description: to-core
+System Name: sw2.lab
+
+Management Addresses:
+    IP: 10.0.0.2
+----------------------------------------
+Local Intf: Gi0/3
+Port id: 0011.2233.4466
+Port Description: access uplink
+System Name: sw3.lab
+----------------------------------------

@@ -1,0 +1,14 @@
+Interface Ethernet1 detected 1 LLDP neighbors:
+
+  Neighbor 001c.7300.0001/Ethernet49, age 12 seconds
+  Chassis ID type: MAC address (4)
+  Port ID type   : Interface name (5)
+  Port ID        : "Ethernet49"
+  System Name: "spine1.lab.local"
+  Management Address        : 10.1.1.1
+
+Interface Ethernet2 detected 1 LLDP neighbors:
+
+  Neighbor 001c.7300.0002/Ethernet50, age 3 seconds
+  Port ID        : "Ethernet50"
+  System Name: "spine2"

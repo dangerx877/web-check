@@ -1,0 +1,14 @@
+NETCOMMANDER 3.3.0 - IMPORTANT LIMITS
+=====================================
+
+NOTE:
+  NetCommander was tested with automated tests against simulated devices. It
+  has not been verified on real devices, on a real desktop session on
+  Windows or macOS, or against real SNMP agents and REST APIs. Vendor
+  support for Juniper, HPE, Dell, Nokia and Cisco follows vendor
+  documentation and has not been checked against real device output. Test on
+  lab equipment first: especially rollback, SNMPv3 and REST monitoring, and
+  strict host-key trust. Config pushes change real devices; review what you
+  send. Upgrading from an earlier version converts the vault to a new format
+  that older versions cannot open, so copy the vaults folder somewhere safe
+  before the first run.

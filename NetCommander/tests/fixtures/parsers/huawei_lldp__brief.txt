@@ -1,0 +1,3 @@
+Local Intf       Neighbor Dev             Neighbor Intf             Exptime(s)
+GE0/0/1          SW2                      GE0/0/2                   110
+GE0/0/3          edge.lab                 XGE0/0/1                  95
