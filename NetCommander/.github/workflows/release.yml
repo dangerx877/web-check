@@ -21,5 +21,5 @@ jobs:
       - run: pyinstaller packaging/netcommander.spec
       - uses: actions/upload-artifact@v4
         with:
-          name: NetCommander-${{ runner.os }}
+          name: UptimeFunk-${{ runner.os }}
           path: dist/

@@ -273,7 +273,7 @@ class TestCli:
     def test_version_flag(self, capsys):
         with pytest.raises(SystemExit) as e:
             cli.main(["--version"])
-        assert e.value.code == 0 and f"NetCommander {__version__}" in capsys.readouterr().out
+        assert e.value.code == 0 and f"Uptime Funk {__version__}" in capsys.readouterr().out
 
     def test_missing_dependency_gives_friendly_exit_code(self, monkeypatch, capsys):
         def boom(paths, settings): raise ImportError("No module named 'customtkinter'")
@@ -289,7 +289,7 @@ class TestCli:
     @pytest.mark.parametrize("args", [["-m", "netcommander", "--version"], ["netcommander.py", "--version"]])
     def test_module_and_thin_entry_point(self, args):
         r = subprocess.run([sys.executable, *args], cwd=ROOT, capture_output=True, text=True, timeout=60)
-        assert r.returncode == 0 and f"NetCommander {__version__}" in r.stdout, r.stderr
+        assert r.returncode == 0 and f"Uptime Funk {__version__}" in r.stdout, r.stderr
 
     def test_package_import_does_not_pull_in_gui_stack(self):
         code = "import sys, netcommander, netcommander.network, netcommander.batch, netcommander.store;" \

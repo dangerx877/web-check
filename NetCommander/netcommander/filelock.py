@@ -1,7 +1,7 @@
 """Cross-process advisory file lock (POSIX ``fcntl`` / Windows ``msvcrt``), re-entrant per thread.
 
 Used so the GUI and a headless ``schedule-run`` (or two CLIs) cannot interleave read-modify-write
-cycles on the same state file. It is advisory: it protects cooperating NetCommander processes, not
+cycles on the same state file. It is advisory: it protects cooperating Uptime Funk processes, not
 against other programs editing the files.
 """
 from __future__ import annotations

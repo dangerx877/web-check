@@ -308,7 +308,7 @@ class ApiServer:
         server = self
 
         class H(BaseHTTPRequestHandler):
-            server_version = "NetCommander"
+            server_version = "UptimeFunk"
             sys_version = ""
             protocol_version = "HTTP/1.1"
 
@@ -413,7 +413,7 @@ class ApiServer:
                         server.platform._audit(s.user, "web.logout", self.client_address[0])
                         return self._json(200, {"ok": True}, {"Set-Cookie": self._cookie_header("", 0)})
                     if s.must_change_password and path != "/api/session":
-                        return self._error(403, "Change your temporary password in NetCommander first.")
+                        return self._error(403, "Change your temporary password in Uptime Funk first.")
                     fn, match, known = server.routes.find(method, path)
                     if fn is None or match is None:
                         return self._error(405 if known else 404, "Method not allowed." if known else "Not found.")

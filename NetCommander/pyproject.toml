@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "netcommander"
+name = "uptime-funk"
 version = "4.0.0"
 description = "Homelab & infrastructure management: multi-vendor network automation plus servers, VMs, containers, NAS, monitoring, automation and backups - with an encrypted vault, MFA and RBAC."
 readme = "README.md"
@@ -38,7 +38,8 @@ build = ["pyinstaller>=6.0"]
 dev = ["pytest>=7.0", "pytest-cov>=4.0", "ruff>=0.4", "mypy>=1.8", "pre-commit>=3.0"]
 
 [project.scripts]
-netcommander = "netcommander.__main__:main"
+uptimefunk = "netcommander.__main__:main"
+netcommander = "netcommander.__main__:main"   # old command, kept as an alias
 
 [tool.setuptools]
 include-package-data = true

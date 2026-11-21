@@ -76,9 +76,9 @@ class NetworkManagerApp(ctk.CTk):
 
         self.guest = bool(vault.ephemeral)
         if self.guest:
-            self.title(f"NetCommander Pro {__version__} — GUEST MODE (passwords in memory only)")
+            self.title(f"Uptime Funk {__version__} — GUEST MODE (passwords in memory only)")
         else:
-            self.title(f"NetCommander Pro {__version__} — Signed in as {current_user} [Vault Unlocked]")
+            self.title(f"Uptime Funk {__version__} — Signed in as {current_user} [Vault Unlocked]")
         self.geometry("1420x890")
 
         self.ui_queue: queue.Queue = queue.Queue()

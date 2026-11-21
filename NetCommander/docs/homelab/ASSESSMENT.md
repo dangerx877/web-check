@@ -1,4 +1,4 @@
-# NetCommander 3.3.0 → 4.0: pre-implementation assessment
+# NetCommander 3.3.0 → Uptime Funk 4.0: pre-implementation assessment
 
 This is the analysis done **before** writing the homelab platform. It is kept in the repository so
 the design decisions can be traced.
@@ -46,10 +46,10 @@ network engineers. ~14,000 lines including ~2,100 pytest cases that need no disp
 | W2 | Audit log is tamper-evident, not tamper-proof. | Low | Documented; off-box sinks recommended. Homelab actions use the same chain. |
 | W3 | Headless password via `NETCOMMANDER_VAULT_PASSWORD` is readable by same-user processes. | Low | `serve` additionally requires a TOTP unless `--unattended` is chosen explicitly. |
 | W4 | No multi-user server: every user needed a local desktop session. | Design gap | Management API with per-user TOTP sign-in, sessions, CSRF. |
-| W5 | Scheduler runs only while a process runs. | Operational | `netcommander serve` is the long-running process (systemd unit provided). |
+| W5 | Scheduler runs only while a process runs. | Operational | `uptimefunk serve` is the long-running process (systemd unit provided). |
 | W6 | JSON-file state does not scale to metric history. | Scalability | Homelab data in SQLite (WAL); network data stays in JSON (compatibility). |
 | W7 | SNMP/REST monitors verified only against fakes. | Verification | Same honest labelling applies to new adapters (see INTEGRATIONS.md). |
-| W8 | `mypy` with `python_version = 3.10` fails on newer numpy stubs in some environments. | Tooling | Not caused by NetCommander; CI lint job uses 3.12 where it passes. |
+| W8 | `mypy` with `python_version = 3.10` fails on newer numpy stubs in some environments. | Tooling | Not caused by Uptime Funk; CI lint job uses 3.12 where it passes. |
 
 ## 5. Integration plan
 
@@ -58,8 +58,8 @@ network engineers. ~14,000 lines including ~2,100 pytest cases that need no disp
 2. **Domain modules** against that core, each with a pure parsing layer tested on captured/realistic output.
 3. **Platform facade** (`HomelabPlatform`) - like `Services` in 3.x - so the GUI, CLI and API share one
    permission/confirmation/audit path.
-4. **Front ends**: management API + web dashboard (multi-user, responsive, themes), `netcommander serve` and
-   `netcommander homelab …` CLI, a Homelab tab in the existing desktop window.
+4. **Front ends**: management API + web dashboard (multi-user, responsive, themes), `uptimefunk serve` and
+   `uptimefunk homelab …` CLI, a Homelab tab in the existing desktop window.
 
 ## 6. Backward-compatibility requirements
 

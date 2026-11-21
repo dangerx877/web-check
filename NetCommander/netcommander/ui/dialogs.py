@@ -121,12 +121,12 @@ class LoginMFADialog(ctk.CTkToplevel):
         self.authenticated_user: str | None = None
         self._secret_widget: SecretReveal | None = None
 
-        self.title("NetCommander — Sign-In & MFA")
+        self.title("Uptime Funk — Sign-In & MFA")
         self.geometry("470x680")
         self.resizable(False, False)
         self.protocol("WM_DELETE_WINDOW", self._on_cancel)
 
-        ctk.CTkLabel(self, text="NetCommander Secure Sign-In",
+        ctk.CTkLabel(self, text="Uptime Funk Secure Sign-In",
                      font=ctk.CTkFont(size=18, weight="bold")).pack(pady=(18, 4))
         ctk.CTkLabel(self, text="Sign in with your email, password and authenticator code.\n"
                                 "Your password also unlocks your encrypted SSH credential vault.",

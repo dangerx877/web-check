@@ -152,7 +152,7 @@ def grab_banner(host: str, port: int, timeout: float = 1.5) -> str:
                 sock = ctx.wrap_socket(raw, server_hostname=host if not _is_ip(host) else None)
             with sock:
                 sock.settimeout(timeout)
-                sock.sendall(f"HEAD / HTTP/1.0\r\nHost: {host}\r\nUser-Agent: NetCommander-Discovery\r\n\r\n".encode())
+                sock.sendall(f"HEAD / HTTP/1.0\r\nHost: {host}\r\nUser-Agent: UptimeFunk-Discovery\r\n\r\n".encode())
                 head = sock.recv(2048).decode("latin-1", "replace")
             server = re.search(r"(?im)^server:\s*(.+)$", head)
             title = head.split("\r\n", 1)[0]

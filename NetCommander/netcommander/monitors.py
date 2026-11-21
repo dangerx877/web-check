@@ -138,7 +138,7 @@ class RestMonitor:
 
     def poll(self, opener: Callable[..., Any] = urllib.request.urlopen, clock: Callable[[], float] = time.time) -> Sample:
         self.validate()
-        req = urllib.request.Request(self.url, headers={"Accept": "application/json", "User-Agent": "NetCommander"})
+        req = urllib.request.Request(self.url, headers={"Accept": "application/json", "User-Agent": "UptimeFunk"})
         if self.auth == "basic":
             tok = base64.b64encode(f"{self.user}:{self.secret}".encode()).decode("ascii")
             req.add_header("Authorization", f"Basic {tok}")

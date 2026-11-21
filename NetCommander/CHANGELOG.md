@@ -1,11 +1,15 @@
 # Changelog
 
-## 4.0.0 - homelab & infrastructure platform
+## 4.0.0 - Uptime Funk: homelab & infrastructure platform
+
+> **Renamed:** NetCommander Pro is now **Uptime Funk**. The `uptimefunk` command is new; `netcommander` still works.
+> The Python package (`netcommander`), data folder, environment variables (`NETCOMMANDER_*`) and file formats are
+> unchanged, so existing installs need no migration. New authenticator entries are labelled "Uptime Funk".
 
 > **Upgrade note:** additive - no existing file is converted. New data lives in `homelab.db`,
 > `homelab_secrets.json` (encrypted) and the optional `homelab.json`. See [docs/homelab/UPGRADE.md](docs/homelab/UPGRADE.md).
 
-NetCommander grows from a network tool into a homelab and infrastructure management platform while keeping every
+NetCommander grows into Uptime Funk, from a network tool into a homelab and infrastructure management platform while keeping every
 3.x feature, file format and command. All 2,103 existing tests pass unchanged; ~140 tests were added.
 
 ### New
@@ -27,8 +31,8 @@ NetCommander grows from a network tool into a homelab and infrastructure managem
   bound to the script hash, execution history, workflows, expiring remediation policies.
 - **Backup & DR**: backup job monitoring (Proxmox, TrueNAS, files, NetCommander config backups, manual),
   verification, recovery points, recovery runbook, configuration export.
-- **Management API + web dashboard** (`netcommander serve`): TOTP sign-in, sessions, CSRF, strict CSP,
-  responsive dark/light UI. **Homelab tab** in the desktop window. **CLI**: `netcommander homelab …`.
+- **Management API + web dashboard** (`uptimefunk serve`): TOTP sign-in, sessions, CSRF, strict CSP,
+  responsive dark/light UI. **Homelab tab** in the desktop window. **CLI**: `uptimefunk homelab …`.
 - Shared core: SQLite persistence, event bus, task runner, encrypted secret store, hardened HTTP/SSH/WinRM
   transports, adapter registry with opt-in plugins, validated configuration.
 

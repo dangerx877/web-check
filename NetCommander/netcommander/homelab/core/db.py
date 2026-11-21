@@ -106,7 +106,7 @@ class Database:
         with self.tx() as c:
             current = int(c.execute("PRAGMA user_version").fetchone()[0])
             if current > SCHEMA_VERSION:
-                raise RuntimeError(f"{self.path} was created by a newer NetCommander (schema {current}); "
+                raise RuntimeError(f"{self.path} was created by a newer Uptime Funk (schema {current}); "
                                    "upgrade the application instead of downgrading the data.")
             for version in range(current + 1, SCHEMA_VERSION + 1):
                 for stmt in _MIGRATIONS[version]:

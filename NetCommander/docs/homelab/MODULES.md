@@ -60,7 +60,7 @@ acknowledge, notifications with de-duplication, event timeline, historical graph
 Thresholds: CHANGE_SETTINGS; checks: EDIT_INVENTORY; acknowledge: RUN_SHOW.
 
 ## Automation (`automation.py`)
-Scripts (Python on the NetCommander host, SSH commands, PowerShell), 8 built-ins, parameters with validation,
+Scripts (Python on the Uptime Funk host, SSH commands, PowerShell), 8 built-ins, parameters with validation,
 declared risk + static risk scan, approvals by a second person bound to the script's SHA-256, execution history
 with captured (redacted, size-capped) output, workflows, and expiring remediation policies.
 Run: RUN_AUTOMATION; author: MANAGE_AUTOMATION; approve: APPROVE_AUTOMATION.

@@ -73,7 +73,7 @@ class HomelabPaths:
 
 
 def load_network_devices(paths: Paths) -> dict[str, dict]:
-    """The classic NetCommander inventory (topology.json), read-only."""
+    """The classic network inventory (topology.json), read-only."""
     if not paths.topology.exists():
         return {}
     from ..network import load_inventory_json

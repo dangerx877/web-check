@@ -1,4 +1,4 @@
-"""NetCommander homelab & infrastructure platform (4.0).
+"""Uptime Funk homelab & infrastructure platform (4.0).
 
 Headless, GUI-free modules that extend the original network tooling to servers, hypervisors,
 containers, storage, monitoring, automation and backups. Layout:

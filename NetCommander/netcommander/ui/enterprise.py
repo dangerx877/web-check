@@ -288,7 +288,7 @@ class SchedulesPanel(_Panel):
         self.btn("Remove…", self.remove)
         self.btn("Pause/Resume…", self.toggle, width=125)
         self.btn("↻", self.refresh, width=36)
-        ctk.CTkLabel(self.bar, text="Runs only while NetCommander (or `netcommander schedule-run`) is running.",
+        ctk.CTkLabel(self.bar, text="Runs only while Uptime Funk (or `netcommander schedule-run`) is running.",
                      text_color=theme.MUTED).pack(side="right", padx=8)
         self.refresh()
 

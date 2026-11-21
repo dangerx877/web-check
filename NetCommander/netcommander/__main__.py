@@ -11,11 +11,12 @@ from __future__ import annotations
 import argparse
 import logging
 import logging.handlers
+import os
 import sys
 from pathlib import Path
 from typing import Sequence
 
-from . import __version__
+from . import BRAND, TAGLINE, __version__
 from .config import ENV_HOME, Paths, RuntimeSettings
 
 LOG_FORMAT = "%(asctime)s %(levelname)-7s %(threadName)s %(name)s: %(message)s"
@@ -23,10 +24,10 @@ LOG_FORMAT = "%(asctime)s %(levelname)-7s %(threadName)s %(name)s: %(message)s"
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="netcommander",
-        description="NetCommander Pro - multi-vendor CLI/config runner with encrypted vault and MFA.",
+        prog="uptimefunk" if os.path.basename(sys.argv[0] or "").lower().startswith("uptimefunk") else "netcommander",
+        description=f"{BRAND} - homelab & network management with an encrypted vault and MFA. {TAGLINE}",
     )
-    parser.add_argument("--version", action="version", version=f"NetCommander {__version__}")
+    parser.add_argument("--version", action="version", version=f"{BRAND} {__version__}")
     parser.add_argument(
         "--data-dir", metavar="DIR",
         help=f"folder for accounts, vaults, backups and topology.json (default: ${ENV_HOME}, "
@@ -111,7 +112,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         return run_gui(paths, settings)
     except ImportError as exc:
         print(
-            f"NetCommander could not start because a dependency is missing: {exc}\n"
+            f"Uptime Funk could not start because a dependency is missing: {exc}\n"
             "Install them with:  pip install -r requirements.txt   (see docs/INSTALL.md)",
             file=sys.stderr,
         )

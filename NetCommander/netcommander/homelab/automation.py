@@ -1,7 +1,7 @@
 """Automation Center: scripts, workflows, approvals, execution history and policy-gated remediation.
 
 Execution kinds
-* ``python``      - runs **on the NetCommander host** in a separate interpreter (``python -I``), in a
+* ``python``      - runs **on the Uptime Funk host** in a separate interpreter (``python -I``), in a
   throw-away working directory, with a minimal environment (no credentials, no ``NETCOMMANDER_*``
   variables) and a timeout. Use it for reports and API glue, not as a sandbox for untrusted code.
 * ``ssh``         - a shell command on Linux/Unix targets over SSH (host keys verified).
@@ -282,7 +282,7 @@ class AutomationCenter:
         if s.kind in ("ssh", "powershell") and not targets:
             raise ValidationError("Choose at least one target for an SSH/PowerShell script.")
         if s.kind == "python" and targets:
-            raise ValidationError("Python scripts run on the NetCommander host; do not pass targets.")
+            raise ValidationError("Python scripts run on the Uptime Funk host; do not pass targets.")
         need = self.needs_approval(s.risk) and not via_policy
         run: dict[str, Any] = {"id": new_id("run"), "script_id": s.id, "script_name": s.name, "kind": s.kind, "risk": s.risk,
                "sha256": s.sha256, "params": dict(params or {}), "targets": list(targets), "requested_by": user,

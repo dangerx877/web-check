@@ -22,7 +22,7 @@ __all__ = [
     "VAULT_DIR", "VENDOR_PROFILES", "get_profile", "resolve_data_dir",
 ]
 
-APP_NAME = "NetCommander"
+APP_NAME = "NetCommander"   # data-folder name; kept after the rename to Uptime Funk so existing data is found
 PACKAGE_DIR = Path(__file__).resolve().parent
 ENV_HOME = "NETCOMMANDER_HOME"
 _TRUTHY = frozenset({"1", "true", "yes", "on"})

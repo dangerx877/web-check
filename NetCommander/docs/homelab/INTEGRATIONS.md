@@ -3,8 +3,8 @@
 Add integrations in the web UI (*Integrations → Add integration*) or the CLI:
 
 ```bash
-netcommander homelab adapters                       # list adapters and their fields
-netcommander homelab add-integration --user you@example.com --category hypervisor --kind proxmox \
+uptimefunk homelab adapters                       # list adapters and their fields
+uptimefunk homelab add-integration --user you@example.com --category hypervisor --kind proxmox \
     --name pve --set url=https://pve.lan:8006 --set token_id='monitor@pve!netcommander' --secret token
 ```
 
@@ -21,11 +21,11 @@ optional libraries. Before relying on an adapter, run the lab checklist at the e
 | Adapter | API used | Maturity | Least-privilege setup |
 |---|---|---|---|
 | Proxmox VE | REST `/api2/json` + API token | stable | Token with **PVEAuditor** on `/`; add **PVEVMUser** only for power actions. Privilege separation on. |
-| VMware ESXi / vCenter | vSphere API via pyVmomi (`pip install 'netcommander[vmware]'`) | beta | Read-only role; *VirtualMachine.Interaction.PowerOn/PowerOff/Reset* for actions. |
-| Microsoft Hyper-V | Hyper-V PowerShell module over WinRM HTTPS (`pip install 'netcommander[windows]'`) | beta | Member of *Hyper-V Administrators* (Hyper-V has no read-only role); WinRM HTTPS listener with a trusted certificate. |
+| VMware ESXi / vCenter | vSphere API via pyVmomi (`pip install 'uptime-funk[vmware]'`) | beta | Read-only role; *VirtualMachine.Interaction.PowerOn/PowerOff/Reset* for actions. |
+| Microsoft Hyper-V | Hyper-V PowerShell module over WinRM HTTPS (`pip install 'uptime-funk[windows]'`) | beta | Member of *Hyper-V Administrators* (Hyper-V has no read-only role); WinRM HTTPS listener with a trusted certificate. |
 | VirtualBox | `VBoxManage` locally or over SSH | stable | The user that owns the VMs (VirtualBox VMs are per user). |
 | KVM / libvirt | `virsh` locally or over SSH | stable | Member of the `libvirt` group (read + power). Use `qemu:///system`. |
-| Docker Engine | Engine API over `unix:///var/run/docker.sock` or `tcp://host:2376` with mutual TLS | stable | Socket access is root-equivalent: run NetCommander on the host, or expose the daemon with TLS client certificates. `tcp://…:2375` is refused unless explicitly allowed. |
+| Docker Engine | Engine API over `unix:///var/run/docker.sock` or `tcp://host:2376` with mutual TLS | stable | Socket access is root-equivalent: run Uptime Funk on the host, or expose the daemon with TLS client certificates. `tcp://…:2375` is refused unless explicitly allowed. |
 | TrueNAS SCALE/CORE | REST v2.0 with API key | stable | API key for a dedicated read-only user (24.10+). REST is deprecated from 25.04 in favour of JSON-RPC; still functional. |
 | Synology DSM | DSM Web API (`SYNO.API.Auth`, `SYNO.Storage.CGI.Storage`, `SYNO.Core.Share`) | beta | Dedicated non-admin account **without** 2FA (unattended polling). Storage API fields are not publicly documented. |
 | UGREEN NAS | SSH + standard Linux tools (`lsblk`, `mdstat`, `df`, `smartctl`, `testparm`) | beta | UGREEN publishes no management API. Enable SSH in UGOS, use a dedicated account; allow `sudo -n smartctl` for SMART. |
@@ -38,9 +38,9 @@ no special rights for the read-only collector on Linux; on Windows, membership o
 read access to CIM (or local admin).
 
 ### SSH host keys
-NetCommander never auto-accepts host keys for servers, NAS or hypervisors. Trust a host once:
+Uptime Funk never auto-accepts host keys for servers, NAS or hypervisors. Trust a host once:
 *Security → SSH host keys* (compare the fingerprint with the one on the device console) or
-`netcommander homelab trust-host --user you@example.com 10.0.0.5`.
+`uptimefunk homelab trust-host --user you@example.com 10.0.0.5`.
 
 ### TLS for HTTPS APIs
 Default: full certificate validation. For self-signed devices use `ca_file` (trust the device's CA/certificate)

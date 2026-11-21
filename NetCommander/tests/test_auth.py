@@ -40,7 +40,7 @@ class TestRegistration:
     def test_returns_secret_and_provisioning_uri(self, auth):
         secret, uri = auth.create_account(EMAIL, PW)
         assert len(secret) >= 16 and uri.startswith("otpauth://totp/") and secret in uri
-        assert "NetCommander" in uri
+        assert "issuer=Uptime%20Funk" in uri          # product renamed to Uptime Funk in 4.0
 
     def test_totp_secret_is_encrypted_at_rest(self, registered):
         auth, secret = registered

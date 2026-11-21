@@ -29,6 +29,7 @@ from typing import Callable, Mapping, NamedTuple
 import pyotp
 from cryptography.fernet import Fernet, InvalidToken
 
+from . import BRAND
 from .config import (
     DEFAULT_AUTH_PATH,
     DEFAULT_VAULT_PATH,
@@ -742,7 +743,7 @@ class AuthManager:
                 record["created_by"] = (created_by or "").strip().lower()
                 record["must_change_password"] = True
             self._commit(norm, record)
-        uri = pyotp.TOTP(totp_secret).provisioning_uri(name=norm, issuer_name="NetCommander")
+        uri = pyotp.TOTP(totp_secret).provisioning_uri(name=norm, issuer_name=BRAND)
         return totp_secret, uri
 
     # ---- login -------------------------------------------------------
@@ -983,7 +984,7 @@ class AuthManager:
             work["totp_enc"] = key.encrypt(secret.encode("ascii")).decode("ascii")
             work["last_totp_step"] = -1
             self._commit(norm, work)
-        return secret, pyotp.TOTP(secret).provisioning_uri(name=norm, issuer_name="NetCommander")
+        return secret, pyotp.TOTP(secret).provisioning_uri(name=norm, issuer_name=BRAND)
 
     def admin_reset(self, email: str, temp_password: str, *, reset_by: str) -> tuple[str, str]:
         """An administrator resets another user's sign-in (forgotten password / lost phone).
@@ -1015,7 +1016,7 @@ class AuthManager:
                          "reset_by": admin})
             work.pop("recovery", None)
             self._commit(norm, work)
-        return secret, pyotp.TOTP(secret).provisioning_uri(name=norm, issuer_name="NetCommander")
+        return secret, pyotp.TOTP(secret).provisioning_uri(name=norm, issuer_name=BRAND)
 
     def _upgrade_record(self, rec: dict, password: str, secret: str) -> None:
         """Re-hash with the current work factor and encrypt a legacy plaintext TOTP secret."""

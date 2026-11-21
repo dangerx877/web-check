@@ -103,10 +103,10 @@ Optional SNMPv3 monitoring: `pip install "netcommander[snmp]"`. Standalone binar
 Nothing extra is required for the platform itself. Optional extras:
 
 ```bash
-pip install 'netcommander[vmware]'    # VMware ESXi / vCenter (pyvmomi)
-pip install 'netcommander[windows]'   # Windows servers and Hyper-V (pywinrm)
-pip install 'netcommander[homelab]'   # both
+pip install 'uptime-funk[vmware]'    # VMware ESXi / vCenter (pyvmomi)
+pip install 'uptime-funk[windows]'   # Windows servers and Hyper-V (pywinrm)
+pip install 'uptime-funk[homelab]'   # both
 ```
 
-Start the web dashboard with `netcommander serve --user you@example.com` (or *Homelab → Open Web Dashboard* in the
+Start the web dashboard with `uptimefunk serve --user you@example.com` (or *Homelab → Open Web Dashboard* in the
 desktop window). Full guide: [homelab/DEPLOYMENT.md](homelab/DEPLOYMENT.md).

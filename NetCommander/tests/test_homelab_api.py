@@ -71,7 +71,7 @@ def admin(server):
 def test_static_assets_and_security_headers(server):
     c = Client(server.port)
     st, body, r = c.req("GET", "/")
-    assert st == 200 and "<title>NetCommander</title>" in body
+    assert st == 200 and "<title>Uptime Funk</title>" in body
     csp = r.getheader("Content-Security-Policy")
     assert "script-src 'self'" in csp and "frame-ancestors 'none'" in csp
     assert r.getheader("X-Content-Type-Options") == "nosniff" and r.getheader("X-Frame-Options") == "DENY"

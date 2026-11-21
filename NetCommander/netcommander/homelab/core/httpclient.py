@@ -135,7 +135,7 @@ class HttpClient:
     def request_raw(self, method: str, path: str, *, params: Mapping[str, Any] | None = None,
                     json_body: Any = None, form: Mapping[str, Any] | None = None,
                     headers: Mapping[str, str] | None = None) -> tuple[int, dict[str, str], bytes]:
-        hdrs = {"Accept": "application/json", "User-Agent": "NetCommander-Homelab", **self.headers, **(headers or {})}
+        hdrs = {"Accept": "application/json", "User-Agent": "UptimeFunk", **self.headers, **(headers or {})}
         body: bytes | None = None
         if json_body is not None:
             body = json.dumps(json_body).encode("utf-8")

@@ -1,5 +1,5 @@
 [Unit]
-Description=NetCommander homelab platform (API, web dashboard, monitoring)
+Description=Uptime Funk homelab platform (API, web dashboard, monitoring)
 After=network-online.target
 Wants=network-online.target
 
@@ -10,7 +10,7 @@ Group=netcommander
 Environment=NETCOMMANDER_HOME=/var/lib/netcommander
 # The account password is decrypted by systemd at start and exposed only to this service.
 LoadCredentialEncrypted=nc-password:/etc/credstore.encrypted/nc-password
-ExecStart=/bin/sh -c 'NETCOMMANDER_VAULT_PASSWORD="$(cat "$CREDENTIALS_DIRECTORY/nc-password")" exec /opt/netcommander/bin/netcommander serve --user admin@example.com --unattended'
+ExecStart=/bin/sh -c 'NETCOMMANDER_VAULT_PASSWORD="$(cat "$CREDENTIALS_DIRECTORY/nc-password")" exec /opt/netcommander/bin/uptimefunk serve --user admin@example.com --unattended'
 Restart=on-failure
 RestartSec=10
 # Hardening

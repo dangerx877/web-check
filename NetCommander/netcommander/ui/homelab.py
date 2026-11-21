@@ -1,7 +1,7 @@
 """Homelab tab in the desktop window: a summary of the unified platform plus shortcuts.
 
 The full homelab interface is the web dashboard (served on 127.0.0.1 by the same process, sign-in
-with your NetCommander account + authenticator code). All logic lives in
+with your Uptime Funk account + authenticator code). All logic lives in
 :class:`netcommander.homelab.platform.HomelabPlatform`; this panel only displays it.
 """
 from __future__ import annotations
@@ -36,7 +36,7 @@ def format_summary(d: dict) -> str:
     lines += [f"  [{a['severity'].upper():8}] {a['message']}" for a in d["alerts"]["items"]] or ["  (none)"]
     lines += ["", "Integrations:"]
     lines += [f"  {i['name']:<20} {i['kind']:<10} {'OK' if i['ok'] else ('FAILED: ' + i['last_error'][:80]) if i['ok'] is False else 'not polled'}"
-              for i in d["integrations"]] or ["  (none - add them in the web dashboard or with `netcommander homelab add-integration`)"]
+              for i in d["integrations"]] or ["  (none - add them in the web dashboard or with `uptimefunk homelab add-integration`)"]
     lines += ["", "Recent events:"]
     lines += [f"  {e['severity']:<8} {e['message'][:110]}" for e in d["events"][:10]] or ["  (none)"]
     return "\n".join(lines)
@@ -132,6 +132,6 @@ class HomelabPanel(_Panel):
                 self.svc.audit("web.start", self.server.url)
             webbrowser.open(self.server.url)
             self.show(f"Web dashboard running at {self.server.url} (this computer only).\n"
-                      "Sign in with your NetCommander e-mail, password and authenticator code.")
+                      "Sign in with your Uptime Funk e-mail, password and authenticator code.")
         except Exception as exc:
             messagebox.showerror("Web dashboard", str(exc))

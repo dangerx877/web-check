@@ -12,8 +12,8 @@ hiddenimports += ["matplotlib.backends.backend_tkagg"]
 a = Analysis(["../netcommander.py"], pathex=[".."], datas=datas, binaries=binaries,
              hiddenimports=hiddenimports, excludes=["pytest"])
 pyz = PYZ(a.pure)
-exe = EXE(pyz, a.scripts, [], exclude_binaries=True, name="NetCommander", console=False)
-coll = COLLECT(exe, a.binaries, a.datas, name="NetCommander")
+exe = EXE(pyz, a.scripts, [], exclude_binaries=True, name="UptimeFunk", console=False)
+coll = COLLECT(exe, a.binaries, a.datas, name="UptimeFunk")
 import sys
 if sys.platform == "darwin":
-    app = BUNDLE(coll, name="NetCommander.app", bundle_identifier="org.netcommander.app")
+    app = BUNDLE(coll, name="Uptime Funk.app", bundle_identifier="org.netcommander.app")

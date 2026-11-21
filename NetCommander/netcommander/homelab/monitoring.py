@@ -137,7 +137,7 @@ def run_http(check: Check, opener: Callable[..., Any] | None = None) -> dict[str
     import urllib.error
     import urllib.request
     ctx = ssl.create_default_context() if check.verify_tls else ssl._create_unverified_context()
-    req = urllib.request.Request(check.url, headers={"User-Agent": "NetCommander-Monitor"})
+    req = urllib.request.Request(check.url, headers={"User-Agent": "UptimeFunk-Monitor"})
     t0 = time.perf_counter()
     status, body = 0, b""
     try:

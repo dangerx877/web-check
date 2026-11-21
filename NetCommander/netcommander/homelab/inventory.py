@@ -3,7 +3,7 @@
 * Manual entries (``source="manual"``) are created and edited by people; edited fields are locked.
 * Observations from discovery and integrations are *upserted*: matched to an existing asset by
   ``(integration, external_id)``, then MAC, then IP (for discovery), otherwise created.
-* The original NetCommander device inventory (``topology.json`` / :class:`~netcommander.store.DeviceStore`)
+* The original network device inventory (``topology.json`` / :class:`~netcommander.store.DeviceStore`)
   is mirrored read-only (:func:`network_assets`), so routers and switches appear in the same views and can be
   linked to servers, VMs and storage without moving their data or changing the network workflows.
 """
@@ -36,7 +36,7 @@ def network_kind(device_type: str | None) -> str:
 
 
 def network_assets(devices: Mapping[str, dict]) -> list[Asset]:
-    """Read-only Asset views of the classic NetCommander inventory (``DeviceStore.snapshot()``)."""
+    """Read-only Asset views of the classic network inventory (``DeviceStore.snapshot()``)."""
     out = []
     for name, dev in sorted(devices.items()):
         params = dev.get("params", {})

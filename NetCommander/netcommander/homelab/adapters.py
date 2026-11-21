@@ -11,7 +11,7 @@ F = FieldSpec
 TLS = (F("verify_tls", "Verify TLS certificate", kind="bool", default=True),
        F("ca_file", "CA certificate file", help="PEM file to trust for a self-signed device"),
        F("pin_sha256", "Certificate SHA-256 pin", help="Accept exactly this certificate (hex fingerprint)"))
-SSH = (F("host", "Host", required=True, help="'local' runs on the NetCommander machine"),
+SSH = (F("host", "Host", required=True, help="'local' runs on the Uptime Funk machine"),
        F("port", "SSH port", kind="int", default=22), F("username", "Username", default="root"),
        F("password", "Password", secret=True), F("key_file", "Private key file"))
 
@@ -111,7 +111,7 @@ def builtin_registry() -> Registry:
     extra = (F("use_sudo", "Use sudo -n for smartctl", kind="bool", default=False),
              F("smart", "Read SMART data", kind="bool", default=True))
     r.register(AdapterSpec("storage", "ugreen", "UGREEN NAS (SSH)", _linux_storage("UgreenAdapter"), SSH + extra, st, "beta",
-                           "UGREEN publishes no management API; NetCommander uses SSH and standard Linux tools."))
+                           "UGREEN publishes no management API; Uptime Funk uses SSH and standard Linux tools."))
     r.register(AdapterSpec("storage", "qnap", "QNAP NAS (SSH)", _linux_storage("QnapAdapter"), SSH + extra, st, "beta",
                            "Uses SSH and standard Linux tools (QTS/QuTS hero)."))
     r.register(AdapterSpec("storage", "linux", "Linux storage server (SSH)", _linux_storage("LinuxStorageAdapter"),

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# NetCommander installer for Linux / macOS
+# Uptime Funk (formerly NetCommander) installer for Linux / macOS
 set -e
 cd "$(dirname "$0")"
 PY=${PYTHON:-python3}

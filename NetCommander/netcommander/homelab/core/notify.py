@@ -95,7 +95,7 @@ class SmtpChannel:
 
     def send(self, n: Notification) -> None:
         msg = EmailMessage()
-        msg["Subject"] = f"[NetCommander {n.severity.upper()}] {n.title}"
+        msg["Subject"] = f"[Uptime Funk {n.severity.upper()}] {n.title}"
         msg["From"], msg["To"] = self.sender, ", ".join(self.recipients)
         msg.set_content(redact_text(n.message))
         ctx = ssl.create_default_context()

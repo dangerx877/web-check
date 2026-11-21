@@ -34,7 +34,7 @@ class SynologyAdapter:
     def _login(self) -> str:
         res = self.http.post("/entry.cgi", form={"api": "SYNO.API.Auth", "method": "login", "version": 6,
                                                  "account": self.username, "passwd": self.password,
-                                                 "session": "NetCommander", "format": "sid"})
+                                                 "session": "UptimeFunk", "format": "sid"})
         if not isinstance(res, dict) or not res.get("success"):
             code = (res or {}).get("error", {}).get("code") if isinstance(res, dict) else None
             hint = " (account uses 2FA?)" if code in (403, 404, 406) else ""
@@ -44,7 +44,7 @@ class SynologyAdapter:
     def _logout(self, sid: str) -> None:
         try:
             self.http.get("/entry.cgi", params={"api": "SYNO.API.Auth", "method": "logout", "version": 6,
-                                                "session": "NetCommander", "_sid": sid})
+                                                "session": "UptimeFunk", "_sid": sid})
         except IntegrationError:
             pass
 

@@ -1,6 +1,6 @@
 """Generic Linux storage server over SSH - also used for UGREEN (UGOS Pro) and QNAP (QTS/QuTS) NAS.
 
-UGREEN and QNAP do not publish a stable management API for third parties, so NetCommander talks to them
+UGREEN and QNAP do not publish a stable management API for third parties, so Uptime Funk talks to them
 the way an administrator would: SSH (enable it in the NAS control panel) and standard Linux tools.
 Everything is read-only and allowlisted (:data:`STORAGE_POLICY`):
 

@@ -1,4 +1,4 @@
-# Security assessment - NetCommander 4.0 homelab platform
+# Security assessment - Uptime Funk 4.0 homelab platform
 
 Scope: everything added in 4.0 (`netcommander/homelab`, `netcommander/ui/homelab.py`, CLI additions) and how it
 interacts with the 3.x security core. Method: design review, threat modelling per entry point, and tests that
@@ -7,7 +7,7 @@ exercise the controls (all listed tests run in CI without devices).
 ## Assets and trust boundaries
 * **Secrets**: integration tokens/passwords (SecretStore), server credentials (SecretStore refs), vault (3.x).
 * **Control**: VM/container power, automation (remote command execution), IPAM/inventory edits.
-* **Boundaries**: browser ↔ API server; NetCommander ↔ managed devices; NetCommander ↔ local OS (files, subprocess).
+* **Boundaries**: browser ↔ API server; Uptime Funk ↔ managed devices; Uptime Funk ↔ local OS (files, subprocess).
 
 ## Controls
 
@@ -34,10 +34,10 @@ exercise the controls (all listed tests run in CI without devices).
 
 ## Residual risks (accepted / to address)
 
-1. **The service account holds every integration secret.** `netcommander serve` unlocks one account's vault;
+1. **The service account holds every integration secret.** `uptimefunk serve` unlocks one account's vault;
    any web user with the right permission causes actions with those credentials (authorised and audited per user).
    Mitigate with least-privilege device accounts (see INTEGRATIONS.md).
-2. **Python automation scripts run on the NetCommander host** as the service user. They are approved and
+2. **Python automation scripts run on the Uptime Funk host** as the service user. They are approved and
    isolated (separate interpreter, scrubbed environment, temp dir, timeout) but this is **not a sandbox**.
 3. **Risk scan is heuristic.** It catches obvious mismatches; the second-person approval is the real control.
 4. **Docker socket access is root-equivalent** on the Docker host.

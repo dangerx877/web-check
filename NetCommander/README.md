@@ -1,10 +1,12 @@
-# NetCommander Pro
+# Uptime Funk 🎶
 
-**4.0: homelab & infrastructure platform.** Besides the network tools below, NetCommander now discovers and
+*Don't believe me, just watch.* — homelab & infrastructure management (formerly **NetCommander Pro**).
+
+**4.0: homelab & infrastructure platform.** Besides the network tools below, Uptime Funk now discovers and
 manages servers, VMs (Proxmox, ESXi, Hyper-V, VirtualBox, KVM), Docker hosts and NAS (TrueNAS, Synology, QNAP,
 UGREEN, Linux), with monitoring and alerting, an automation center with approvals, backup monitoring and a web
 dashboard - all behind the same encrypted vault, MFA, roles and audit log. Start with
-[docs/homelab/DEPLOYMENT.md](docs/homelab/DEPLOYMENT.md); `netcommander serve --user you@example.com` opens the dashboard.
+[docs/homelab/DEPLOYMENT.md](docs/homelab/DEPLOYMENT.md); `uptimefunk serve --user you@example.com` opens the dashboard (the old `netcommander` command still works).
 
 | Homelab docs | |
 |---|---|
@@ -39,7 +41,7 @@ Works on Windows, macOS and Linux. Requires Python 3.9+ with Tk (Linux: `sudo ap
 |---|---|
 | `netcommander/` | The application package (see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)) |
 | `netcommander.py` | Thin launcher used by `run.sh` / `run.bat` |
-| `pyproject.toml` | Packaging (`pip install .` gives a `netcommander` command), pytest/ruff/mypy config |
+| `pyproject.toml` | Packaging (`pip install .` gives the `uptimefunk` command (and the old `netcommander` alias)), pytest/ruff/mypy config |
 | `requirements.txt`, `requirements-dev.txt` | Runtime / development packages |
 | `install.sh` / `install.bat`, `run.sh` / `run.bat` | Setup and launchers |
 | `docs/` | INSTALL, HELP, SECURITY, ARCHITECTURE; `docs/homelab/` for the 4.0 platform |

@@ -162,7 +162,7 @@ def _dispatch(args: argparse.Namespace, p: Any, ctx: Any, auth: AuthManager, *, 
         if not args.no_monitoring:
             p.start()
         p._audit(ctx.user, "serve.start", srv.url, "ok", "unattended" if args.unattended else "2fa")
-        out(f"NetCommander homelab platform listening on {srv.url}  (Ctrl+C to stop)")
+        out(f"Uptime Funk homelab platform listening on {srv.url}  (Ctrl+C to stop)")
         try:
             srv.serve_forever()
         except KeyboardInterrupt:

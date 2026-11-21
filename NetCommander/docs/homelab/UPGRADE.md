@@ -15,10 +15,10 @@ stores its own data in new files next to them.
 ## Steps
 1. **Back up the data folder** (`netcommander data-dir` prints it) - as for any upgrade.
 2. Install 4.0 (`pip install -U netcommander` or pull the checkout and `pip install -r requirements.txt`).
-   Optional: `pip install 'netcommander[homelab]'` for ESXi/Hyper-V/Windows.
-3. Start the app as usual. Nothing is migrated on start-up; the Homelab tab and `netcommander serve` create
+   Optional: `pip install 'uptime-funk[homelab]'` for ESXi/Hyper-V/Windows.
+3. Start the app as usual. Nothing is migrated on start-up; the Homelab tab and `uptimefunk serve` create
    `homelab.db` on first use (schema version 1).
-4. Optional: write `homelab.json` (see examples) and validate it: `netcommander homelab check-config`.
+4. Optional: write `homelab.json` (see examples) and validate it: `uptimefunk homelab check-config`.
 
 ## Behaviour changes
 * New **Homelab** tab in the desktop window (last tab).
@@ -30,7 +30,7 @@ stores its own data in new files next to them.
 
 ## Rolling back
 Reinstall 3.3.0. It ignores the new files. If you later return to 4.0, the homelab data is still there.
-A `homelab.db` written by a **newer** NetCommander is refused (never downgraded in place).
+A `homelab.db` written by a **newer** Uptime Funk is refused (never downgraded in place).
 
 ## Database migrations
 `homelab.db` carries `PRAGMA user_version`. Future releases apply forward-only migrations inside one transaction
